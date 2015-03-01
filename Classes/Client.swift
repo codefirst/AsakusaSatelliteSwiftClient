@@ -16,7 +16,7 @@ public class Client {
     let apiKey: String?
     
     public convenience init(apiKey: String?) {
-        self.init(baseURL: "http://asakusa-satellite.org/api/v1", apiKey: apiKey)
+        self.init(baseURL: "https://asakusa-satellite.herokuapp.com/api/v1", apiKey: apiKey)
     }
     
     public init(baseURL: String, apiKey: String?) {
