@@ -1,10 +1,17 @@
 PODS:
   - Alamofire (1.1.4)
+  - AsakusaSatelliteSwiftClient (0.0.1):
+    - Alamofire (~> 1.1)
 
 DEPENDENCIES:
-  - Alamofire (~> 1.1)
+  - AsakusaSatelliteSwiftClient (from `../`)
+
+EXTERNAL SOURCES:
+  AsakusaSatelliteSwiftClient:
+    :path: ../
 
 SPEC CHECKSUMS:
   Alamofire: 524225da382071ee3e6d0badd0ee4b4dc36740de
+  AsakusaSatelliteSwiftClient: d11349004d64b3cfff673ef7b6fb35c2162a0548
 
 COCOAPODS: 0.36.0.rc.1
