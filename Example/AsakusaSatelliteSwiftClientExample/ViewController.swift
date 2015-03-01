@@ -18,6 +18,9 @@ class ViewController: UIViewController, UITextFieldDelegate {
     var client = AsakusaSatellite.Client(apiKey: nil)
     let apiKeyField = UITextField()
     let usernameLabel = UILabel()
+    let roomIDToPostField = UITextField()
+    let messageToPostField = UITextField()
+    let postButton = UIButton.buttonWithType(.System) as UIButton
     
     override func loadView() {
         super.loadView()
@@ -30,7 +33,20 @@ class ViewController: UIViewController, UITextFieldDelegate {
         apiKeyField.borderStyle = .RoundedRect
         apiKeyField.delegate = self
         
-        let views = ["apiKey": apiKeyField, "name": usernameLabel]
+        roomIDToPostField.placeholder = "room ID to post"
+        roomIDToPostField.borderStyle = .RoundedRect
+        messageToPostField.placeholder = "message to post"
+        messageToPostField.borderStyle = .RoundedRect
+        postButton.setTitle("Send", forState: .Normal)
+        postButton.addTarget(self, action: "post:", forControlEvents: .TouchUpInside)
+        
+        let views = [
+            "apiKey": apiKeyField,
+            "name": usernameLabel,
+            "roomID": roomIDToPostField,
+            "message": messageToPostField,
+            "post": postButton,
+        ]
         let metrics = ["p": 8]
         for v in views.values {
             v.setTranslatesAutoresizingMaskIntoConstraints(false)
@@ -38,7 +54,10 @@ class ViewController: UIViewController, UITextFieldDelegate {
         }
         view.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("H:|-p-[apiKey]-p-|", options: nil, metrics: metrics, views: views))
         view.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("H:|-p-[name]-p-|", options: nil, metrics: metrics, views: views))
-        view.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("V:|-p-[apiKey]-p-[name]", options: nil, metrics: metrics, views: views))
+        view.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("H:|-p-[roomID]-p-|", options: nil, metrics: metrics, views: views))
+        view.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("H:|-p-[message]-p-|", options: nil, metrics: metrics, views: views))
+        view.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("H:|-p-[post]-p-|", options: nil, metrics: metrics, views: views))
+        view.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("V:|-p-[apiKey]-p-[name]-20-[roomID]-[message]-[post]", options: nil, metrics: metrics, views: views))
     }
     
     override func viewDidLoad() {
@@ -70,6 +89,18 @@ class ViewController: UIViewController, UITextFieldDelegate {
                 self.usernameLabel.text = "logged in as \(user().name)"
             case .Failure(let error):
                 self.usernameLabel.text = "cannot log in: \(error)"
+            }
+        }
+    }
+    
+    func post(sender: AnyObject?) {
+        client.postMessage(messageToPostField.text, roomID: roomIDToPostField.text, files: []) { response in
+            switch response {
+            case .Success(let json):
+                NSLog("messaged posted successfully: \(json())")
+                self.messageToPostField.text = ""
+            case .Failure(let error):
+                NSLog("failed to post message: \(error)")
             }
         }
     }

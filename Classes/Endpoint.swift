@@ -14,12 +14,15 @@ import SwiftyJSON
 public enum Endpoint {
     case ServiceInfo
     case User
+    case PostMessage(message: String, roomID: String, files: [String])
     
     func URLRequest(baseURL: String, apiKey: String?) -> NSURLRequest {
         let (method: Alamofire.Method, path: String, parameters: [String: AnyObject]?, requiresApiKey: Bool) = {
             switch self {
             case .ServiceInfo: return (.GET, "/service/info.json", nil, false)
             case .User: return (.GET, "/user.json", nil, true)
+            case let .PostMessage(message, roomID, files):
+                return (.POST, "/message.json", ["room_id": roomID, "message": message], true) // TODO: files
             }
         }()
         
@@ -93,5 +96,13 @@ public class User: ResponseItem {
         self.name = name!
         self.screenName = screenName!
         self.profileImageURL = profileImageURL!
+    }
+}
+
+
+public class RawJSON: ResponseItem {
+    let json: SwiftyJSON.JSON
+    public required init?(_ json: SwiftyJSON.JSON) {
+        self.json = json
     }
 }

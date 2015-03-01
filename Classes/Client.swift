@@ -45,6 +45,10 @@ public class Client {
         request(Endpoint.User, completion)
     }
     
+    public func postMessage(message: String, roomID: String, files: [String], completion: Response<RawJSON> -> Void) {
+        request(Endpoint.PostMessage(message: message, roomID: roomID, files: files), completion)
+    }
+    
     // MARK: -
     
     private func request<T: ResponseItem>(endpoint: Endpoint, completion: Response<T> -> Void) {
