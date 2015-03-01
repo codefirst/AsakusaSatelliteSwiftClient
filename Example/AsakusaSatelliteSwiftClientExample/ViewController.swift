@@ -11,7 +11,7 @@ import AsakusaSatelliteSwiftClient
 import SwiftyJSON
 
 class ViewController: UIViewController {
-    let client = AsakusaSatelliteSwiftClient.Client()
+    let client = AsakusaSatelliteSwiftClient.Client(apiKey: nil)
     
     override func loadView() {
         super.loadView()
@@ -31,6 +31,15 @@ class ViewController: UIViewController {
                 NSLog("service/info url: \(serviceInfo().messagePusher.url)")
             case .Failure(_):
                 break
+            }
+        }
+        
+        client.user() { response in
+            switch response {
+            case .Success(let user):
+                NSLog("client.user() success. logged in as \(user().name)")
+            case .Failure(let error):
+                NSLog("client.user() failure: \(error)")
             }
         }
     }
