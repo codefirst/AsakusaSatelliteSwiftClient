@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		6E03A3223AD96CC55F8EF0B1 /* Pods.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 15FC971CE7671698F92EDF0A /* Pods.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
+		CECA3AE063069D464AC4FA13 /* Pods.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 15FC971CE7671698F92EDF0A /* Pods.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		EACFD2B61AA2B24C007B868A /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = EACFD2B51AA2B24C007B868A /* AppDelegate.swift */; };
 		EACFD2B81AA2B24C007B868A /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EACFD2B71AA2B24C007B868A /* ViewController.swift */; };
 		EACFD2BD1AA2B24C007B868A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = EACFD2BC1AA2B24C007B868A /* Images.xcassets */; };
@@ -25,6 +27,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		15FC971CE7671698F92EDF0A /* Pods.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		A0944166D14D95B8825AE34C /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
 		EACFD2B01AA2B24C007B868A /* AsakusaSatelliteSwiftClientExample.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = AsakusaSatelliteSwiftClientExample.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		EACFD2B41AA2B24C007B868A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		EACFD2B51AA2B24C007B868A /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -34,6 +38,7 @@
 		EACFD2C51AA2B24C007B868A /* AsakusaSatelliteSwiftClientExampleTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = AsakusaSatelliteSwiftClientExampleTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		EACFD2CA1AA2B24C007B868A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		EACFD2CB1AA2B24C007B868A /* AsakusaSatelliteSwiftClientExampleTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AsakusaSatelliteSwiftClientExampleTests.swift; sourceTree = "<group>"; };
+		F5064C4CCCD00C2A1E51B39C /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -41,6 +46,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				6E03A3223AD96CC55F8EF0B1 /* Pods.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -48,18 +54,38 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CECA3AE063069D464AC4FA13 /* Pods.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		607234655832E9E1EB2CFC3E /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				15FC971CE7671698F92EDF0A /* Pods.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		65954C0592535C515AF4E423 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				A0944166D14D95B8825AE34C /* Pods.debug.xcconfig */,
+				F5064C4CCCD00C2A1E51B39C /* Pods.release.xcconfig */,
+			);
+			name = Pods;
+			sourceTree = "<group>";
+		};
 		EACFD2A71AA2B24C007B868A = {
 			isa = PBXGroup;
 			children = (
-				EACFD2B21AA2B24C007B868A /* AsakusaSatelliteSwiftClientExample */,
-				EACFD2C81AA2B24C007B868A /* AsakusaSatelliteSwiftClientExampleTests */,
+				EACFD2B21AA2B24C007B868A /* ExampleApp */,
+				EACFD2C81AA2B24C007B868A /* ExampleTests */,
 				EACFD2B11AA2B24C007B868A /* Products */,
+				65954C0592535C515AF4E423 /* Pods */,
+				607234655832E9E1EB2CFC3E /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -72,7 +98,7 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
-		EACFD2B21AA2B24C007B868A /* AsakusaSatelliteSwiftClientExample */ = {
+		EACFD2B21AA2B24C007B868A /* ExampleApp */ = {
 			isa = PBXGroup;
 			children = (
 				EACFD2B51AA2B24C007B868A /* AppDelegate.swift */,
@@ -81,6 +107,7 @@
 				EACFD2BE1AA2B24C007B868A /* LaunchScreen.xib */,
 				EACFD2B31AA2B24C007B868A /* Supporting Files */,
 			);
+			name = ExampleApp;
 			path = AsakusaSatelliteSwiftClientExample;
 			sourceTree = "<group>";
 		};
@@ -92,12 +119,13 @@
 			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
-		EACFD2C81AA2B24C007B868A /* AsakusaSatelliteSwiftClientExampleTests */ = {
+		EACFD2C81AA2B24C007B868A /* ExampleTests */ = {
 			isa = PBXGroup;
 			children = (
 				EACFD2CB1AA2B24C007B868A /* AsakusaSatelliteSwiftClientExampleTests.swift */,
 				EACFD2C91AA2B24C007B868A /* Supporting Files */,
 			);
+			name = ExampleTests;
 			path = AsakusaSatelliteSwiftClientExampleTests;
 			sourceTree = "<group>";
 		};
@@ -116,9 +144,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = EACFD2CF1AA2B24C007B868A /* Build configuration list for PBXNativeTarget "AsakusaSatelliteSwiftClientExample" */;
 			buildPhases = (
+				36E42EAD9A42F04097D23619 /* Check Pods Manifest.lock */,
 				EACFD2AC1AA2B24C007B868A /* Sources */,
 				EACFD2AD1AA2B24C007B868A /* Frameworks */,
 				EACFD2AE1AA2B24C007B868A /* Resources */,
+				C29999373E87CE0A092609D9 /* Embed Pods Frameworks */,
+				E5ADE226496B6F7EFEB1E28F /* Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -133,9 +164,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = EACFD2D21AA2B24C007B868A /* Build configuration list for PBXNativeTarget "AsakusaSatelliteSwiftClientExampleTests" */;
 			buildPhases = (
+				56226F780DF9102C9A327937 /* Check Pods Manifest.lock */,
 				EACFD2C11AA2B24C007B868A /* Sources */,
 				EACFD2C21AA2B24C007B868A /* Frameworks */,
 				EACFD2C31AA2B24C007B868A /* Resources */,
+				4F490C5B9FD7159A05E6EF6C /* Embed Pods Frameworks */,
+				126556C0E2FC5C800163C382 /* Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -202,6 +236,99 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		126556C0E2FC5C800163C382 /* Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods/Pods-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		36E42EAD9A42F04097D23619 /* Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
+		};
+		4F490C5B9FD7159A05E6EF6C /* Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Embed Pods Frameworks";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods/Pods-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		56226F780DF9102C9A327937 /* Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
+		};
+		C29999373E87CE0A092609D9 /* Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Embed Pods Frameworks";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods/Pods-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		E5ADE226496B6F7EFEB1E28F /* Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods/Pods-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		EACFD2AC1AA2B24C007B868A /* Sources */ = {
@@ -324,6 +451,7 @@
 		};
 		EACFD2D01AA2B24C007B868A /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = A0944166D14D95B8825AE34C /* Pods.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				INFOPLIST_FILE = AsakusaSatelliteSwiftClientExample/Info.plist;
@@ -334,6 +462,7 @@
 		};
 		EACFD2D11AA2B24C007B868A /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = F5064C4CCCD00C2A1E51B39C /* Pods.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				INFOPLIST_FILE = AsakusaSatelliteSwiftClientExample/Info.plist;
@@ -344,6 +473,7 @@
 		};
 		EACFD2D31AA2B24C007B868A /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = A0944166D14D95B8825AE34C /* Pods.debug.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				FRAMEWORK_SEARCH_PATHS = (
@@ -363,6 +493,7 @@
 		};
 		EACFD2D41AA2B24C007B868A /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = F5064C4CCCD00C2A1E51B39C /* Pods.release.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				FRAMEWORK_SEARCH_PATHS = (

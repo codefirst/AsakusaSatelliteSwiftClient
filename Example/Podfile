@@ -1,0 +1,7 @@
+platform :ios, '8.0'
+use_frameworks!
+
+link_with 'AsakusaSatelliteSwiftClientExample', 'AsakusaSatelliteSwiftClientExampleTests'
+
+pod 'Alamofire', '~> 1.1'
+
