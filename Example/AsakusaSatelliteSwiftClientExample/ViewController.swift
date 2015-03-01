@@ -24,7 +24,7 @@ class ViewController: UIViewController {
         
         title = "AsakusaSatelliteSwiftClientExample"
         
-        client.request(.ServiceInfo).responseServiceInfo{ response in
+        client.call(Endpoint.ServiceInfo()) { response in
             switch response {
             case .Success(let serviceInfo):
                 NSLog("service/info: \(serviceInfo())")

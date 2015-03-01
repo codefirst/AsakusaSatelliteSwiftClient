@@ -22,8 +22,19 @@ public class Client {
         self.baseURL = baseURL
     }
     
-    public func request(endpoint: Endpoint) -> Request {
-        return Alamofire.request(endpoint.URLRequest(baseURL))
+    public func call<T: Requestable>(endpoint: T, completion: Response<T.ResponseItem> -> Void)  {
+        Alamofire.request(endpoint.URLRequest(baseURL)).responseJSON { (request, response, object, error) -> Void in
+            if object == nil || error != nil {
+                NSLog("failure in Client.call(\(endpoint)): \(error)")
+                completion(.Failure(error))
+            } else {
+                if let responseItem = endpoint.responseFromJSON(request, response: response, object: object!, error: error) {
+                    completion(.Success(responseItem))
+                } else {
+                    completion(.Failure(error))
+                }
+            }
+        }
     }
 }
 
@@ -33,28 +44,3 @@ public enum Response<T> {
     case Failure(NSError?)
 }
 
-
-public extension Alamofire.Request {
-    func responseAsakusaSatellite(completion: AsakusaSatelliteSwiftClient.Response<SwiftyJSON.JSON> -> Void) -> Self {
-        return responseJSON { (request, response, object, error) -> Void in
-            if object == nil || error != nil {
-                NSLog("failure in responseAsakusaSatellite: \(error)")
-                completion(.Failure(error))
-            } else {
-                let json = SwiftyJSON.JSON(object!)
-                completion(.Success(json))
-            }
-        }
-    }
-    
-    func responseServiceInfo(completion: Response<ServiceInfo> -> Void) -> Self {
-        return responseAsakusaSatellite { responseAS in
-            switch responseAS {
-            case .Success(let json):
-                completion(.Success(ServiceInfo(json())))
-            case .Failure(let e):
-                completion(.Failure(e))
-            }
-        }
-    }
-}
