@@ -23,9 +23,8 @@ class ViewController: UIViewController {
         
         title = "AsakusaSatelliteSwiftClientExample"
         
-        client.request(.ServiceInfo, handler: { (string) -> Void in
-            NSLog("service/info: \(string)");
-        })
+        client.request(.ServiceInfo).responseJSON { (requeset, response, json, error) -> Void in
+            NSLog("service/info: \(json)")
+        }
     }
 }
-

@@ -21,10 +21,7 @@ public class Client {
         self.baseURL = baseURL
     }
     
-    public func request(endpoint: Endpoint, handler: (string: String?) -> Void) -> Void {
-        Alamofire.request(endpoint.URLRequest(baseURL))
-            .responseString { (request, response, string, error) -> Void in
-                handler(string: string)
-        }
+    public func request(endpoint: Endpoint) -> Request {
+        return Alamofire.request(endpoint.URLRequest(baseURL))
     }
 }
