@@ -22,18 +22,31 @@ public class Client {
         self.baseURL = baseURL
     }
     
-    public func call<T: Requestable>(endpoint: T, completion: Response<T.ResponseItem> -> Void)  {
+    // MARK: - public APIs
+    
+    public func serviceInfo(completion: Response<ServiceInfo> -> Void) {
+        request(Endpoint.ServiceInfo, completion)
+    }
+    
+    // MARK: -
+    
+    private func request<T: ResponseItem>(endpoint: Endpoint, completion: Response<T> -> Void) {
         Alamofire.request(endpoint.URLRequest(baseURL)).responseJSON { (request, response, object, error) -> Void in
             if object == nil || error != nil {
                 NSLog("failure in Client.call(\(endpoint)): \(error)")
                 completion(.Failure(error))
             } else {
-                if let responseItem = endpoint.responseFromJSON(request, response: response, object: object!, error: error) {
-                    completion(.Success(responseItem))
-                } else {
-                    completion(.Failure(error))
-                }
+                self.completeWithResponse(response, object!, error, completion)
             }
+        }
+    }
+    
+    private func completeWithResponse<T: ResponseItem>(response: NSHTTPURLResponse?, _ jsonObject: AnyObject, _ error: NSError?, completion: Response<T> -> Void) {
+        if let responseItem = T(SwiftyJSON.JSON(jsonObject)) {
+            completion(Response.Success(responseItem))
+        } else {
+            NSLog("failure in completeWithResponse")
+            completion(.Failure(error))
         }
     }
 }

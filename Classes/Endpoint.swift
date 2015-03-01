@@ -11,36 +11,19 @@ import Alamofire
 import SwiftyJSON
 
 
-public protocol Requestable {
-    var method: Alamofire.Method { get }
-    var path: String { get }
-    typealias ResponseItem: Any
+public enum Endpoint {
+    case ServiceInfo
     
-    func URLRequest(baseURL: String) -> NSURLRequest
-    func responseFromJSON(request: NSURLRequest, response: NSHTTPURLResponse?, object: AnyObject?, error: NSError?) -> ResponseItem?
-}
-
-public class Endpoint {
-    public class ServiceInfo: Requestable {
-        public let method = Method.GET
-        public let path = "/service/info.json"
-        public typealias ResponseItem = AsakusaSatelliteSwiftClient.ServiceInfo
-        
-        public init() {}
-        
-        public func URLRequest(baseURL: String) -> NSURLRequest {
-            return Endpoint.URLRequest(baseURL, method: method, path: path, parameters: nil)
-        }
-        
-        public func responseFromJSON(request: NSURLRequest, response: NSHTTPURLResponse?, object: AnyObject?, error: NSError?) -> ResponseItem? {
-            if let json = object as? NSDictionary {
-                return AsakusaSatelliteSwiftClient.ServiceInfo(SwiftyJSON.JSON(json))
+    func URLRequest(baseURL: String) -> NSURLRequest {
+        let (method: Alamofire.Method, path: String, parameters: [String: AnyObject]?) = {
+            switch self {
+            case .ServiceInfo: return (.GET, "/service/info.json", nil)
             }
-            return nil
-        }
+        }()
+        return Endpoint.URLRequest(baseURL, method: method, path: path, parameters: parameters)
     }
     
-    class func URLRequest(baseURL: String, method: Alamofire.Method, path: String, parameters: [String: AnyObject]?) -> NSURLRequest {
+    static func URLRequest(baseURL: String, method: Alamofire.Method, path: String, parameters: [String: AnyObject]?) -> NSURLRequest {
         let baseRequest = NSMutableURLRequest(URL: NSURL(string: baseURL + path)!)
         baseRequest.HTTPMethod = method.rawValue
         let (request, error) = Alamofire.ParameterEncoding.URL.encode(baseRequest, parameters: parameters)
@@ -52,7 +35,12 @@ public class Endpoint {
 }
 
 
-public class ServiceInfo {
+protocol ResponseItem {
+    init?(_ json: SwiftyJSON.JSON)
+}
+
+
+public class ServiceInfo: ResponseItem {
     public class MessagePusher {
         public let name: String?
         public let param: [String: String]
@@ -70,7 +58,7 @@ public class ServiceInfo {
     }
     public let messagePusher: MessagePusher
     
-    init(_ json: SwiftyJSON.JSON) {
+    public required init?(_ json: SwiftyJSON.JSON) {
         messagePusher = MessagePusher(json["message_pusher"])
     }
 }
