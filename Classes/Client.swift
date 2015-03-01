@@ -31,7 +31,6 @@ public class Client {
     private func removeCookies() {
         let cs = NSHTTPCookieStorage.sharedHTTPCookieStorage()
         for cookie in (cs.cookiesForURL(NSURL(string: baseURL)!) as? [NSHTTPCookie]) ?? [] {
-            NSLog("removing cookie: \(cookie)")
             cs.deleteCookie(cookie)
         }
     }
