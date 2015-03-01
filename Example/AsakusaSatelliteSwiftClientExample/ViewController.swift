@@ -14,13 +14,15 @@ import SwiftyJSON
 private let kDefaultsKeyApiKey = "apiKey"
 
 
-class ViewController: UIViewController, UITextFieldDelegate {
+class ViewController: UIViewController, UITextFieldDelegate, UITextViewDelegate {
     var client = AsakusaSatellite.Client(apiKey: nil)
     let apiKeyField = UITextField()
     let usernameLabel = UILabel()
     let roomIDToPostField = UITextField()
     let messageToPostField = UITextField()
     let postButton = UIButton.buttonWithType(.System) as UIButton
+    let listButton = UIButton.buttonWithType(.System) as UIButton
+    let messagesTextView = UITextView()
     
     override func loadView() {
         super.loadView()
@@ -33,12 +35,15 @@ class ViewController: UIViewController, UITextFieldDelegate {
         apiKeyField.borderStyle = .RoundedRect
         apiKeyField.delegate = self
         
-        roomIDToPostField.placeholder = "room ID to post"
+        roomIDToPostField.placeholder = "room ID to post or list"
         roomIDToPostField.borderStyle = .RoundedRect
         messageToPostField.placeholder = "message to post"
         messageToPostField.borderStyle = .RoundedRect
         postButton.setTitle("Send", forState: .Normal)
         postButton.addTarget(self, action: "post:", forControlEvents: .TouchUpInside)
+        listButton.setTitle("List", forState: .Normal)
+        listButton.addTarget(self, action: "list:", forControlEvents: .TouchUpInside)
+        messagesTextView.delegate = self
         
         let views = [
             "apiKey": apiKeyField,
@@ -46,6 +51,8 @@ class ViewController: UIViewController, UITextFieldDelegate {
             "roomID": roomIDToPostField,
             "message": messageToPostField,
             "post": postButton,
+            "listButton": listButton,
+            "messages": messagesTextView,
         ]
         let metrics = ["p": 8]
         for v in views.values {
@@ -56,8 +63,11 @@ class ViewController: UIViewController, UITextFieldDelegate {
         view.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("H:|-p-[name]-p-|", options: nil, metrics: metrics, views: views))
         view.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("H:|-p-[roomID]-p-|", options: nil, metrics: metrics, views: views))
         view.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("H:|-p-[message]-p-|", options: nil, metrics: metrics, views: views))
-        view.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("H:|-p-[post]-p-|", options: nil, metrics: metrics, views: views))
-        view.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("V:|-p-[apiKey]-p-[name]-20-[roomID]-[message]-[post]", options: nil, metrics: metrics, views: views))
+        view.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("H:|-p-[listButton]", options: nil, metrics: metrics, views: views))
+        view.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("H:[post]-p-|", options: nil, metrics: metrics, views: views))
+        view.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("H:|[messages]|", options: nil, metrics: metrics, views: views))
+        view.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("V:|-p-[apiKey]-p-[name]-20-[roomID]-[message]-[post]-[messages]|", options: nil, metrics: metrics, views: views))
+        view.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("V:[message]-[listButton]", options: nil, metrics: metrics, views: views))
     }
     
     override func viewDidLoad() {
@@ -105,6 +115,19 @@ class ViewController: UIViewController, UITextFieldDelegate {
         }
     }
     
+    func list(sender: AnyObject?) {
+        client.messageList(roomIDToPostField.text, count: 20, sinceID: nil, untilID: nil, order: .Desc) { response in
+            switch response {
+            case .Success(let many):
+                let messages = many().items
+                // NSLog("messages (\(messages.count)): \(messages)")
+                self.messagesTextView.text = "\n".join(messages.map{"\($0.name): \($0.body)"})
+            case .Failure(let error):
+                NSLog("failed to list messages: \(error)")
+            }
+        }
+    }
+    
     // MARK: - TextField
     
     func textFieldShouldReturn(textField: UITextField) -> Bool {
@@ -120,6 +143,13 @@ class ViewController: UIViewController, UITextFieldDelegate {
         reloadClient()
         
         return true
+    }
+    
+    // MARK: - TextView
+
+    func textViewShouldBeginEditing(textView: UITextView) -> Bool {
+        view.endEditing(true)
+        return false
     }
 }
 

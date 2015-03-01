@@ -48,15 +48,20 @@ public class Client {
     public func postMessage(message: String, roomID: String, files: [String], completion: Response<PostMessage> -> Void) {
         request(Endpoint.PostMessage(message: message, roomID: roomID, files: files), completion)
     }
+    public func messageList(roomID: String, count: Int?, sinceID: String?, untilID: String?, order: SortOrder?, completion: Response<Many<Message>> -> Void) {
+        request(Endpoint.MessageList(roomID: roomID, count: count, sinceID: sinceID, untilID: untilID, order: order), completion)
+    }
     
     // MARK: -
     
     private func request<T: ResponseItem>(endpoint: Endpoint, completion: Response<T> -> Void) {
         Alamofire.request(endpoint.URLRequest(baseURL, apiKey: apiKey)).responseJSON { (request, response, object, error) -> Void in
             if object == nil || error != nil {
-                NSLog("failure in Client.call(\(endpoint)): \(error)")
+                NSLog("failure in Client.request(\(endpoint)): \(error)")
                 completion(.Failure(error))
             } else {
+                // NSLog("request: \(request)")
+                NSLog("error: \(error)")
                 self.completeWithResponse(response, object!, error, completion)
             }
         }
@@ -76,5 +81,11 @@ public class Client {
 public enum Response<T> {
     case Success(@autoclosure() -> T) // workaround for Swift compiler error
     case Failure(NSError?)
+}
+
+
+public enum SortOrder: String {
+    case Asc = "asc"
+    case Desc = "desc"
 }
 
