@@ -10,27 +10,21 @@ import Foundation
 import Alamofire
 
 
-internal let ASBaseURLString = "http://asakusa-satellite.org/api/v1"
-
-
-public enum Endpoint: URLRequestConvertible {
+public enum Endpoint {
     case ServiceInfo
     
-    public var URLRequest: NSURLRequest {
-        let (path: String, parameters: [String: AnyObject]?) = {
+    public func URLRequest(baseURL: String) -> NSURLRequest {
+        let (method: Alamofire.Method, path: String, parameters: [String: AnyObject]?) = {
             switch self {
-            case .ServiceInfo: return ("/service/info.json", nil)
+            case .ServiceInfo: return (.GET, "/service/info.json", nil)
             }
         }()
-        let baseRequest = NSURLRequest(URL: NSURL(string: ASBaseURLString + path)!)
+        let baseRequest = NSMutableURLRequest(URL: NSURL(string: baseURL + path)!)
+        baseRequest.HTTPMethod = method.rawValue
         let (request, error) = Alamofire.ParameterEncoding.URL.encode(baseRequest, parameters: parameters)
         if let e = error {
             NSLog("error during creating request: \(e)")
         }
         return request
-    }
-    
-    public var method: Alamofire.Method {
-        return .GET
     }
 }

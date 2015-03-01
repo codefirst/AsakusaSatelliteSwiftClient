@@ -9,13 +9,20 @@
 import Foundation
 import Alamofire
 
+
 public class Client {
-    public init() {
-        
+    let baseURL: String
+    
+    public convenience init() {
+        self.init(baseURL: "http://asakusa-satellite.org/api/v1")
+    }
+    
+    public init(baseURL: String) {
+        self.baseURL = baseURL
     }
     
     public func request(endpoint: Endpoint, handler: (string: String?) -> Void) -> Void {
-        Alamofire.request(endpoint)
+        Alamofire.request(endpoint.URLRequest(baseURL))
             .responseString { (request, response, string, error) -> Void in
                 handler(string: string)
         }
