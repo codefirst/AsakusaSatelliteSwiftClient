@@ -8,6 +8,7 @@
 
 import UIKit
 import AsakusaSatelliteSwiftClient
+import SwiftyJSON
 
 class ViewController: UIViewController {
     let client = AsakusaSatelliteSwiftClient.Client()
@@ -23,8 +24,15 @@ class ViewController: UIViewController {
         
         title = "AsakusaSatelliteSwiftClientExample"
         
-        client.request(.ServiceInfo).responseJSON { (requeset, response, json, error) -> Void in
-            NSLog("service/info: \(json)")
+        client.request(.ServiceInfo).responseServiceInfo{ response in
+            switch response {
+            case .Success(let serviceInfo):
+                NSLog("service/info: \(serviceInfo())")
+                NSLog("service/info url: \(serviceInfo().messagePusher.url)")
+            case .Failure(_):
+                break
+            }
         }
     }
 }
+
