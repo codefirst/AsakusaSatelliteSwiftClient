@@ -9,7 +9,6 @@
 /* Begin PBXBuildFile section */
 		EACFD2B61AA2B24C007B868A /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = EACFD2B51AA2B24C007B868A /* AppDelegate.swift */; };
 		EACFD2B81AA2B24C007B868A /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EACFD2B71AA2B24C007B868A /* ViewController.swift */; };
-		EACFD2BB1AA2B24C007B868A /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = EACFD2B91AA2B24C007B868A /* Main.storyboard */; };
 		EACFD2BD1AA2B24C007B868A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = EACFD2BC1AA2B24C007B868A /* Images.xcassets */; };
 		EACFD2C01AA2B24C007B868A /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = EACFD2BE1AA2B24C007B868A /* LaunchScreen.xib */; };
 		EACFD2CC1AA2B24C007B868A /* AsakusaSatelliteSwiftClientExampleTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = EACFD2CB1AA2B24C007B868A /* AsakusaSatelliteSwiftClientExampleTests.swift */; };
@@ -30,7 +29,6 @@
 		EACFD2B41AA2B24C007B868A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		EACFD2B51AA2B24C007B868A /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		EACFD2B71AA2B24C007B868A /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
-		EACFD2BA1AA2B24C007B868A /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		EACFD2BC1AA2B24C007B868A /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		EACFD2BF1AA2B24C007B868A /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/LaunchScreen.xib; sourceTree = "<group>"; };
 		EACFD2C51AA2B24C007B868A /* AsakusaSatelliteSwiftClientExampleTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = AsakusaSatelliteSwiftClientExampleTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -79,7 +77,6 @@
 			children = (
 				EACFD2B51AA2B24C007B868A /* AppDelegate.swift */,
 				EACFD2B71AA2B24C007B868A /* ViewController.swift */,
-				EACFD2B91AA2B24C007B868A /* Main.storyboard */,
 				EACFD2BC1AA2B24C007B868A /* Images.xcassets */,
 				EACFD2BE1AA2B24C007B868A /* LaunchScreen.xib */,
 				EACFD2B31AA2B24C007B868A /* Supporting Files */,
@@ -192,7 +189,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				EACFD2BB1AA2B24C007B868A /* Main.storyboard in Resources */,
 				EACFD2C01AA2B24C007B868A /* LaunchScreen.xib in Resources */,
 				EACFD2BD1AA2B24C007B868A /* Images.xcassets in Resources */,
 			);
@@ -236,14 +232,6 @@
 /* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
-		EACFD2B91AA2B24C007B868A /* Main.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				EACFD2BA1AA2B24C007B868A /* Base */,
-			);
-			name = Main.storyboard;
-			sourceTree = "<group>";
-		};
 		EACFD2BE1AA2B24C007B868A /* LaunchScreen.xib */ = {
 			isa = PBXVariantGroup;
 			children = (
@@ -289,7 +277,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 8.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
@@ -326,7 +314,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 8.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -407,6 +395,7 @@
 				EACFD2D11AA2B24C007B868A /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		EACFD2D21AA2B24C007B868A /* Build configuration list for PBXNativeTarget "AsakusaSatelliteSwiftClientExampleTests" */ = {
 			isa = XCConfigurationList;
@@ -415,6 +404,7 @@
 				EACFD2D41AA2B24C007B868A /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
