@@ -96,8 +96,8 @@ class ViewController: UIViewController, UITextFieldDelegate {
     func post(sender: AnyObject?) {
         client.postMessage(messageToPostField.text, roomID: roomIDToPostField.text, files: []) { response in
             switch response {
-            case .Success(let json):
-                NSLog("message posted successfully: \(json())")
+            case .Success(let postMessage):
+                NSLog("message posted successfully: \(postMessage().messageID)")
                 self.messageToPostField.text = ""
             case .Failure(let error):
                 NSLog("failed to post message: \(error)")

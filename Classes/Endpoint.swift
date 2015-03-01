@@ -100,8 +100,23 @@ public class User: ResponseItem {
 }
 
 
+public class PostMessage: ResponseItem {
+    public let messageID: String = ""
+    public required init?(_ json: SwiftyJSON.JSON) {
+        let status = json["status"].string
+        let error = json["error"].string
+        let messageID = json["message_id"].string
+
+        if status != "ok" || error != nil || messageID == nil {
+            return nil
+        }
+        
+        self.messageID = messageID!
+    }
+}
+
 public class RawJSON: ResponseItem {
-    let json: SwiftyJSON.JSON
+    public let json: SwiftyJSON.JSON
     public required init?(_ json: SwiftyJSON.JSON) {
         self.json = json
     }

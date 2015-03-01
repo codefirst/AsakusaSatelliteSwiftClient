@@ -45,7 +45,7 @@ public class Client {
         request(Endpoint.User, completion)
     }
     
-    public func postMessage(message: String, roomID: String, files: [String], completion: Response<RawJSON> -> Void) {
+    public func postMessage(message: String, roomID: String, files: [String], completion: Response<PostMessage> -> Void) {
         request(Endpoint.PostMessage(message: message, roomID: roomID, files: files), completion)
     }
     
