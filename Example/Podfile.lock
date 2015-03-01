@@ -1,20 +1,20 @@
 PODS:
   - Alamofire (1.1.4)
-  - AsakusaSatelliteSwiftClient (0.0.1):
+  - AsakusaSatellite (0.0.1):
     - Alamofire (~> 1.1)
     - SwiftyJSON (~> 2.1)
   - SwiftyJSON (2.1.3)
 
 DEPENDENCIES:
-  - AsakusaSatelliteSwiftClient (from `../`)
+  - AsakusaSatellite (from `../`)
 
 EXTERNAL SOURCES:
-  AsakusaSatelliteSwiftClient:
+  AsakusaSatellite:
     :path: ../
 
 SPEC CHECKSUMS:
   Alamofire: 524225da382071ee3e6d0badd0ee4b4dc36740de
-  AsakusaSatelliteSwiftClient: b1411d684068c493d276c78648e19f1ccca5c5c8
+  AsakusaSatellite: f10b3e38d4e59280849039d1fe807269f8d15591
   SwiftyJSON: 48be7490a3989a58a3f511cd54167f0a2b466e76
 
 COCOAPODS: 0.36.0.rc.1

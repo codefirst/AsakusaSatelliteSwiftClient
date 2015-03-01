@@ -3,5 +3,5 @@ use_frameworks!
 
 link_with 'AsakusaSatelliteSwiftClientExample', 'AsakusaSatelliteSwiftClientExampleTests'
 
-pod 'AsakusaSatelliteSwiftClient', :path => '../'
+pod 'AsakusaSatellite', :path => '../'
 

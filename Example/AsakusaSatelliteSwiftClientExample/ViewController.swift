@@ -7,7 +7,7 @@
 //
 
 import UIKit
-import AsakusaSatelliteSwiftClient
+import AsakusaSatellite
 import SwiftyJSON
 
 
@@ -15,7 +15,7 @@ private let kDefaultsKeyApiKey = "apiKey"
 
 
 class ViewController: UIViewController, UITextFieldDelegate {
-    var client = AsakusaSatelliteSwiftClient.Client(apiKey: nil)
+    var client = AsakusaSatellite.Client(apiKey: nil)
     let apiKeyField = UITextField()
     let usernameLabel = UILabel()
     
@@ -51,7 +51,7 @@ class ViewController: UIViewController, UITextFieldDelegate {
     private func reloadClient() {
         let apiKey = NSUserDefaults.standardUserDefaults().objectForKey(kDefaultsKeyApiKey) as? String
         apiKeyField.text = apiKey
-        client = AsakusaSatelliteSwiftClient.Client(apiKey: apiKey)
+        client = AsakusaSatellite.Client(apiKey: apiKey)
         NSLog("initialized client with apiKey = \(apiKey)")
         
         client.serviceInfo() { response in
