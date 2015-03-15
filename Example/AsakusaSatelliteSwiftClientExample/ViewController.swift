@@ -46,6 +46,8 @@ class ViewController: UIViewController, UITextFieldDelegate, UITextViewDelegate 
         listButton.addTarget(self, action: "list:", forControlEvents: .TouchUpInside)
         messagesTextView.delegate = self
         
+        navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Sign in", style: .Plain, target: self, action: "signin:")
+        
         let views = [
             "apiKey": apiKeyField,
             "name": usernameLabel,
@@ -82,7 +84,7 @@ class ViewController: UIViewController, UITextFieldDelegate, UITextViewDelegate 
         let apiKey = NSUserDefaults.standardUserDefaults().objectForKey(kDefaultsKeyApiKey) as? String
         apiKeyField.text = apiKey
         client = AsakusaSatellite.Client(apiKey: apiKey)
-        // client = AsakusaSatellite.Client(baseURL: "http://localhost:3000/api/v1", apiKey: apiKey)
+        // client = AsakusaSatellite.Client(rootURL: "http://localhost:3000", apiKey: apiKey)
         NSLog("initialized client with apiKey = \(apiKey)")
         
         usernameLabel.text = "(initialized)"
@@ -142,6 +144,21 @@ class ViewController: UIViewController, UITextFieldDelegate, UITextViewDelegate 
                 NSLog("failed to list messages: \(error)")
             }
         }
+    }
+    
+    func signin(sender: AnyObject?) {
+        let vc = TwitterAuthViewController(rootURL: NSURL(string: client.rootURL)!) { [weak self] apiKey in
+            let defaults = NSUserDefaults.standardUserDefaults()
+            if let apiKey = apiKey {
+                defaults.setObject(apiKey, forKey: kDefaultsKeyApiKey)
+            } else {
+                NSLog("cannot sign in")
+                defaults.removeObjectForKey(kDefaultsKeyApiKey)
+            }
+            defaults.synchronize()
+            self?.reloadClient()
+        }
+        navigationController?.pushViewController(vc, animated: true)
     }
     
     // MARK: - TextField

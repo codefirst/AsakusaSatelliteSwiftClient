@@ -16,7 +16,7 @@ EXTERNAL SOURCES:
 
 SPEC CHECKSUMS:
   Alamofire: 524225da382071ee3e6d0badd0ee4b4dc36740de
-  AsakusaSatellite: e7082b74b819a4436ccb0efa522ed93e94406b74
+  AsakusaSatellite: 499c3117a42e276856fbd04608e38d40718b1c71
   Socket.IO-Client-Swift: 23d9f0db0cdcb98623486ddf0ee811b158e9cd02
   SwiftyJSON: 48be7490a3989a58a3f511cd54167f0a2b466e76
 

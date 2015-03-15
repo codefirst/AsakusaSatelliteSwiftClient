@@ -12,15 +12,16 @@ import SwiftyJSON
 
 
 public class Client {
-    let baseURL: String
+    public let rootURL: String
+    var apiBaseURL: String { return "\(rootURL)/api/v1" }
     let apiKey: String?
     
     public convenience init(apiKey: String?) {
-        self.init(baseURL: "https://asakusa-satellite.herokuapp.com/api/v1", apiKey: apiKey)
+        self.init(rootURL: "https://asakusa-satellite.herokuapp.com", apiKey: apiKey)
     }
     
-    public init(baseURL: String, apiKey: String?) {
-        self.baseURL = baseURL
+    public init(rootURL: String, apiKey: String?) {
+        self.rootURL = rootURL
         self.apiKey = apiKey
         
         // remove all AasakusaSatellite cookies
@@ -30,7 +31,7 @@ public class Client {
     
     private func removeCookies() {
         let cs = NSHTTPCookieStorage.sharedHTTPCookieStorage()
-        for cookie in (cs.cookiesForURL(NSURL(string: baseURL)!) as? [NSHTTPCookie]) ?? [] {
+        for cookie in (cs.cookiesForURL(NSURL(string: rootURL)!) as? [NSHTTPCookie]) ?? [] {
             cs.deleteCookie(cookie)
         }
     }
@@ -74,7 +75,7 @@ public class Client {
     // MARK: -
     
     private func request<T: ResponseItem>(endpoint: Endpoint, completion: Response<T> -> Void) {
-        Alamofire.request(endpoint.URLRequest(baseURL, apiKey: apiKey)).responseJSON { (request, response, object, error) -> Void in
+        Alamofire.request(endpoint.URLRequest(apiBaseURL, apiKey: apiKey)).responseJSON { (request, response, object, error) -> Void in
             if object == nil || error != nil {
                 NSLog("failure in Client.request(\(endpoint)): \(error)")
                 completion(.Failure(error))
