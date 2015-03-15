@@ -23,6 +23,7 @@ class ViewController: UIViewController, UITextFieldDelegate, UITextViewDelegate 
     let postButton = UIButton.buttonWithType(.System) as UIButton
     let listButton = UIButton.buttonWithType(.System) as UIButton
     let messagesTextView = UITextView()
+    var pusher: MessagePusherClient?
     
     override func loadView() {
         super.loadView()
@@ -81,16 +82,8 @@ class ViewController: UIViewController, UITextFieldDelegate, UITextViewDelegate 
         let apiKey = NSUserDefaults.standardUserDefaults().objectForKey(kDefaultsKeyApiKey) as? String
         apiKeyField.text = apiKey
         client = AsakusaSatellite.Client(apiKey: apiKey)
+        // client = AsakusaSatellite.Client(baseURL: "http://localhost:3000/api/v1", apiKey: apiKey)
         NSLog("initialized client with apiKey = \(apiKey)")
-        
-        client.serviceInfo() { response in
-            switch response {
-            case .Success(let serviceInfo):
-                NSLog("service/info: name = \(serviceInfo().messagePusher.name), url = \(serviceInfo().messagePusher.url)")
-            case .Failure(_):
-                break
-            }
-        }
         
         usernameLabel.text = "(initialized)"
         client.user() { response in
@@ -99,6 +92,19 @@ class ViewController: UIViewController, UITextFieldDelegate, UITextViewDelegate 
                 self.usernameLabel.text = "logged in as \(user().name)"
             case .Failure(let error):
                 self.usernameLabel.text = "cannot log in: \(error)"
+            }
+        }
+                
+        client.messagePusher(roomIDToPostField.text) { mpc in
+            NSLog("pusher: \(mpc)")
+            
+            self.pusher = mpc
+            if let pusher = self.pusher {
+                pusher.onMessageCreate = { message in
+                    // NSLog("onMessageCreate: \(message)")
+                    self.messagesTextView.text = "\(self.messagesTextView.text)\n\(message.name): \(message.body)"
+                }
+                pusher.connect()
             }
         }
     }
