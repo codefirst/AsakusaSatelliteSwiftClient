@@ -52,6 +52,21 @@ public class Client {
         request(Endpoint.MessageList(roomID: roomID, count: count, sinceID: sinceID, untilID: untilID, order: order), completion)
     }
     
+    public func messagePusher(roomID: String, completion: (MessagePusherClient? -> Void)) {
+        serviceInfo { response in
+            switch response {
+            case .Success(let serviceInfo):
+                if let engine = MessagePusherClient.Engine(messagePusher: serviceInfo().messagePusher) {
+                    completion(MessagePusherClient(engine: engine, roomID: roomID))
+                } else {
+                    completion(nil)
+                }
+            case .Failure(let error):
+                completion(nil)
+            }
+        }
+    }
+    
     // MARK: -
     
     private func request<T: ResponseItem>(endpoint: Endpoint, completion: Response<T> -> Void) {
@@ -60,8 +75,6 @@ public class Client {
                 NSLog("failure in Client.request(\(endpoint)): \(error)")
                 completion(.Failure(error))
             } else {
-                // NSLog("request: \(request)")
-                NSLog("error: \(error)")
                 self.completeWithResponse(response, object!, error, completion)
             }
         }
