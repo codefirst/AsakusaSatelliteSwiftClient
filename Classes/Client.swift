@@ -45,6 +45,10 @@ public class Client {
         request(Endpoint.User, completion)
     }
     
+    public func roomList(completion: Response<Many<Room>> -> Void) {
+        request(Endpoint.RoomList, completion)
+    }
+    
     public func postMessage(message: String, roomID: String, files: [String], completion: Response<PostMessage> -> Void) {
         request(Endpoint.PostMessage(message: message, roomID: roomID, files: files), completion)
     }

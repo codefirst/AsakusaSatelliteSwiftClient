@@ -14,6 +14,7 @@ import SwiftyJSON
 public enum Endpoint {
     case ServiceInfo
     case User
+    case RoomList
     case PostMessage(message: String, roomID: String, files: [String])
     case MessageList(roomID: String, count: Int?, sinceID: String?, untilID: String?, order: SortOrder?)
     
@@ -22,6 +23,7 @@ public enum Endpoint {
             switch self {
             case .ServiceInfo: return (.GET, "/service/info.json", nil, false)
             case .User: return (.GET, "/user.json", nil, true)
+            case .RoomList: return (.GET, "/room/list.json", nil, true)
             case let .PostMessage(message, roomID, files):
                 return (.POST, "/message.json", ["room_id": roomID, "message": message], true) // TODO: files
             case let .MessageList(roomID, count, sinceID, untilID, order):
@@ -105,6 +107,24 @@ public class User: ResponseItem {
         self.name = name!
         self.screenName = screenName!
         self.profileImageURL = profileImageURL!
+    }
+}
+
+
+public class Room: ResponseItem {
+    public let id: String = ""
+    public let name: String = ""
+    
+    public required init?(_ json: SwiftyJSON.JSON) {
+        let id = json["id"].string
+        let name = json["name"].string
+        
+        if ([id, name].filter{$0 == nil}).count > 0 {
+            return nil
+        }
+        
+        self.id = id!
+        self.name = name!
     }
 }
 

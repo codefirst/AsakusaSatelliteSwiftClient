@@ -94,7 +94,17 @@ class ViewController: UIViewController, UITextFieldDelegate, UITextViewDelegate 
                 self.usernameLabel.text = "cannot log in: \(error)"
             }
         }
-                
+        
+        client.roomList { response in
+            switch response {
+            case .Success(let many):
+                let rooms = many().items
+                NSLog("rooms: " + rooms.map{"\($0.name)(\($0.id))"}.description)
+            case .Failure(let error):
+                NSLog("failed to list rooms: \(error)")
+            }
+        }
+        
         client.messagePusher(roomIDToPostField.text) { mpc in
             NSLog("pusher: \(mpc)")
             
