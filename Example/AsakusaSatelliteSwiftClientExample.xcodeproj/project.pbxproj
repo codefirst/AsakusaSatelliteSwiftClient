@@ -29,6 +29,7 @@
 /* Begin PBXFileReference section */
 		15FC971CE7671698F92EDF0A /* Pods.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		A0944166D14D95B8825AE34C /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
+		EACD53DF1ABAF23A0071FC5A /* AsakusaSatellite.playground */ = {isa = PBXFileReference; lastKnownFileType = file.playground; path = AsakusaSatellite.playground; sourceTree = "<group>"; };
 		EACFD2B01AA2B24C007B868A /* AsakusaSatelliteSwiftClientExample.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = AsakusaSatelliteSwiftClientExample.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		EACFD2B41AA2B24C007B868A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		EACFD2B51AA2B24C007B868A /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -81,6 +82,7 @@
 		EACFD2A71AA2B24C007B868A = {
 			isa = PBXGroup;
 			children = (
+				EACD53DF1ABAF23A0071FC5A /* AsakusaSatellite.playground */,
 				EACFD2B21AA2B24C007B868A /* ExampleApp */,
 				EACFD2C81AA2B24C007B868A /* ExampleTests */,
 				EACFD2B11AA2B24C007B868A /* Products */,
