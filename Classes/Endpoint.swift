@@ -114,10 +114,17 @@ public class User: ResponseItem {
 public class Room: ResponseItem {
     public let id: String = ""
     public let name: String = ""
+    public let owner: User?
+    public let members: [User]
+    public var ownerAndMembers: [User] {
+        return compact([owner]) + members
+    }
     
     public required init?(_ json: SwiftyJSON.JSON) {
         let id = json["id"].string
         let name = json["name"].string
+        self.owner = User(json["user"])
+        self.members = compact(json["members"].arrayValue.map{User($0)})
         
         if ([id, name].filter{$0 == nil}).count > 0 {
             return nil
@@ -215,3 +222,9 @@ public class RawJSON: ResponseItem {
         self.json = json
     }
 }
+
+
+private func compact<T>(array: [T?]) -> [T] {
+    return array.reduce([]){ a, b in b.map{a + [$0]} ?? a}
+}
+
