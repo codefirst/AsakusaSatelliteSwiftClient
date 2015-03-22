@@ -17,6 +17,7 @@ public enum Endpoint {
     case RoomList
     case PostMessage(message: String, roomID: String, files: [String])
     case MessageList(roomID: String, count: Int?, sinceID: String?, untilID: String?, order: SortOrder?)
+    case AddDevice(deviceToken: NSData, name: String)
     
     func URLRequest(baseURL: String, apiKey: String?) -> NSURLRequest {
         let (method: Alamofire.Method, path: String, parameters: [String: AnyObject]?, requiresApiKey: Bool) = {
@@ -34,6 +35,8 @@ public enum Endpoint {
                 params["until_id"] = untilID
                 params["order"] = order?.rawValue
                 return (.GET, "/message/list.json", params, true)
+            case let .AddDevice(deviceToken, name):
+                return (.POST, "/user/add_device", ["device": deviceToken.description, "name": name], true)
             }
         }()
         
@@ -220,6 +223,12 @@ public class RawJSON: ResponseItem {
     public let json: SwiftyJSON.JSON
     public required init?(_ json: SwiftyJSON.JSON) {
         self.json = json
+    }
+}
+
+
+public class Nothing: ResponseItem {
+    public required init?(_ json: SwiftyJSON.JSON) {
     }
 }
 

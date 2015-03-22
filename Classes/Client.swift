@@ -39,22 +39,26 @@ public class Client {
     // MARK: - public APIs
     
     public func serviceInfo(completion: Response<ServiceInfo> -> Void) {
-        request(Endpoint.ServiceInfo, completion)
+        request(Endpoint.ServiceInfo, completion: completion)
     }
     
     public func user(completion: Response<User> -> Void) {
-        request(Endpoint.User, completion)
+        request(Endpoint.User, completion: completion)
     }
     
     public func roomList(completion: Response<Many<Room>> -> Void) {
-        request(Endpoint.RoomList, completion)
+        request(Endpoint.RoomList, completion: completion)
     }
     
     public func postMessage(message: String, roomID: String, files: [String], completion: Response<PostMessage> -> Void) {
-        request(Endpoint.PostMessage(message: message, roomID: roomID, files: files), completion)
+        request(Endpoint.PostMessage(message: message, roomID: roomID, files: files), completion: completion)
     }
     public func messageList(roomID: String, count: Int?, sinceID: String?, untilID: String?, order: SortOrder?, completion: Response<Many<Message>> -> Void) {
-        request(Endpoint.MessageList(roomID: roomID, count: count, sinceID: sinceID, untilID: untilID, order: order), completion)
+        request(Endpoint.MessageList(roomID: roomID, count: count, sinceID: sinceID, untilID: untilID, order: order), completion: completion)
+    }
+    
+    public func addDevice(deviceToken: NSData, name: String, completion: Response<Nothing> -> Void) {
+        request(Endpoint.AddDevice(deviceToken: deviceToken, name: name), {$0.validate(statusCode: [200])}, completion: completion)
     }
     
     public func messagePusher(roomID: String, completion: (MessagePusherClient? -> Void)) {
@@ -74,8 +78,8 @@ public class Client {
     
     // MARK: -
     
-    private func request<T: ResponseItem>(endpoint: Endpoint, completion: Response<T> -> Void) {
-        Alamofire.request(endpoint.URLRequest(apiBaseURL, apiKey: apiKey)).responseJSON { (request, response, object, error) -> Void in
+    private func request<T: ResponseItem>(endpoint: Endpoint, requestModifier: (Request -> Request) = {$0}, completion: Response<T> -> Void) {
+        requestModifier(Alamofire.request(endpoint.URLRequest(apiBaseURL, apiKey: apiKey))).responseJSON { (request, response, object, error) -> Void in
             if object == nil || error != nil {
                 NSLog("failure in Client.request(\(endpoint)): \(error)")
                 completion(.Failure(error))
