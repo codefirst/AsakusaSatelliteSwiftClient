@@ -189,6 +189,8 @@ public class Message: ResponseItem, Printable {
     public let htmlBody: String = ""
     public let createdAt: NSDate = NSDate()
     public let profileImageURL: String = ""
+    public let attachments: [Attachment] = []
+    public var imageAttachments: [Attachment] { return attachments.filter{$0.contentType.hasPrefix("image/")} }
     
     public required init?(_ json: SwiftyJSON.JSON) {
         let id = json["id"].string
@@ -211,10 +213,36 @@ public class Message: ResponseItem, Printable {
         self.htmlBody = htmlBody!
         self.createdAt = createdAt!
         self.profileImageURL = profileImageURL!
+        self.attachments = compact(json["attachment"].arrayValue.map{Attachment($0)})
     }
     
     public var description: String {
         return "Message([\(id)] \(createdAt) @\(screenName)(\(name)) ![\(profileImageURL)]: \(body) \(htmlBody))"
+    }
+}
+
+
+public class Attachment: ResponseItem, Printable {
+    public let url: String = "" // can be relative URL
+    public let filename: String = ""
+    public let contentType: String = ""
+    
+    public required init?(_ json: SwiftyJSON.JSON) {
+        let url = json["url"].string
+        let filename = json["filename"].string
+        let contentType = json["content_type"].string
+        
+        if compact([url, filename, contentType]).count == 0 {
+            return nil
+        }
+        
+        self.url = url!
+        self.filename = filename!
+        self.contentType = contentType!
+    }
+    
+    public var description: String {
+        return "Attachment([\(contentType)] \(filename) at \(url))"
     }
 }
 
