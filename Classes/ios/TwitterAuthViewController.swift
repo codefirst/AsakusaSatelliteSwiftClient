@@ -10,13 +10,11 @@ import Foundation
 import UIKit
 
 
-private let kAuthTwitterPath = "/auth/twitter"
-private let kAccountPath = "/account"
-
-
 public class TwitterAuthViewController: UIViewController, UIWebViewDelegate {
     let webview = UIWebView(frame: CGRectZero)
     let rootURL: NSURL
+    var authTwitterURL: NSURL { return NSURL(string: "auth/twitter", relativeToURL: rootURL)! }
+    var accountURL: NSURL { return NSURL(string: "account", relativeToURL: rootURL)! }
     let completion: (String? -> Void)
     
     // MARK: init
@@ -41,31 +39,17 @@ public class TwitterAuthViewController: UIViewController, UIWebViewDelegate {
         webview.delegate = self
         view.addSubview(webview)
         
-        if let url = NSURL(string: kAuthTwitterPath, relativeToURL: rootURL) {
-            // load /auth/twitter with referer /account
-            // oauth callback redirects to referer
-            let request = NSMutableURLRequest(URL: url)
-            request.setValue(kAccountPath, forHTTPHeaderField: "Referer")
-            webview.loadRequest(request)
-        } else {
-            let ac = UIAlertController(
-                title: NSLocalizedString("Cannot Load", comment: ""),
-                message: NSLocalizedString("Invalid URL: ", comment: "") + "\(rootURL)",
-                preferredStyle: .Alert)
-            ac.addAction(UIAlertAction(title: "OK", style: .Default, handler: { _ in
-                ac.dismissViewControllerAnimated(true, completion: nil)
-            }))
-            self.presentViewController(ac, animated: true, completion: nil)
-        }
+        // load /auth/twitter with referer /account
+        // oauth callback redirects to referer
+        let request = NSMutableURLRequest(URL: authTwitterURL)
+        request.setValue(accountURL.absoluteString, forHTTPHeaderField: "Referer")
+        webview.loadRequest(request)
     }
     
     // MARK: UIWebViewDelegate
     
     private func isRedirectedBackToAsakusaSatellite(request: NSURLRequest) -> Bool {
-        let reqURLString = request.URL.absoluteString
-        let rootURLString = rootURL.absoluteString!
-        
-        return reqURLString?.hasPrefix(rootURLString) == true && request.URL.path == kAccountPath
+        return request.URL.absoluteString == accountURL.absoluteString
     }
     
     public func webView(webView: UIWebView, shouldStartLoadWithRequest request: NSURLRequest, navigationType: UIWebViewNavigationType) -> Bool {

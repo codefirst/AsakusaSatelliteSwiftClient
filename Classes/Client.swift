@@ -13,11 +13,11 @@ import SwiftyJSON
 
 public class Client {
     public let rootURL: String
-    var apiBaseURL: String { return "\(rootURL)/api/v1" }
+    var apiBaseURL: String { return rootURL.stringByAppendingFormat("api/v1") }
     let apiKey: String?
     
     public convenience init(apiKey: String?) {
-        self.init(rootURL: "https://asakusa-satellite.herokuapp.com", apiKey: apiKey)
+        self.init(rootURL: "https://asakusa-satellite.herokuapp.com/", apiKey: apiKey)
     }
     
     public init(rootURL: String, apiKey: String?) {

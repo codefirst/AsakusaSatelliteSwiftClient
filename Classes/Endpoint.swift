@@ -78,7 +78,7 @@ public enum Endpoint {
     
     static func URLRequest(baseURL: String, method: Alamofire.Method, path: String, parameters: [String: AnyObject]?, body: NSData?) -> NSURLRequest {
         let urlRequestWithParams: NSURLRequest = {
-            let getRequest = NSMutableURLRequest(URL: NSURL(string: baseURL + path)!)
+            let getRequest = NSMutableURLRequest(URL: NSURL(string: baseURL.stringByAppendingPathComponent(path))!)
             getRequest.HTTPMethod = Method.GET.rawValue
             let (request, error) = Alamofire.ParameterEncoding.URL.encode(getRequest, parameters: parameters) // Alamofire encode params into body when POST
             if let e = error {
