@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name         = "AsakusaSatellite"
-  s.version      = "0.2.1"
+  s.version      = "0.3.0"
   s.summary      = "AsakusaSatellite API Client for Swift"
   s.description  = <<-DESC
                    AsakusaSatellite is a realtime chat application for developers.
@@ -17,6 +17,6 @@ Pod::Spec.new do |s|
   s.requires_arc = true
   s.dependency "Alamofire", "~> 1.1"
   s.dependency "SwiftyJSON", "~> 2.1"
-  s.dependency "Socket.IO-Client-Swift", "~> 1.1"
+  s.dependency "Socket.IO-Client-Swift", "~> 2.0"
   s.dependency "UTIKit", "~> 1.0"
 end
