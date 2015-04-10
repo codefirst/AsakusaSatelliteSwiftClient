@@ -58,14 +58,14 @@ public class Client {
     }
     
     public func addDevice(deviceToken: NSData, name: String, completion: Response<Nothing> -> Void) {
-        request(Endpoint.AddDevice(deviceToken: deviceToken, name: name), {$0.validate(statusCode: [200])}, completion: completion)
+        request(Endpoint.AddDevice(deviceToken: deviceToken, name: name), requestModifier: {$0.validate(statusCode: [200])}, completion: completion)
     }
     
     public func messagePusher(roomID: String, completion: (MessagePusherClient? -> Void)) {
         serviceInfo { response in
             switch response {
             case .Success(let serviceInfo):
-                if let engine = MessagePusherClient.Engine(messagePusher: serviceInfo().messagePusher) {
+                if let engine = MessagePusherClient.Engine(messagePusher: serviceInfo.value.messagePusher) {
                     completion(MessagePusherClient(engine: engine, roomID: roomID))
                 } else {
                     completion(nil)
@@ -84,14 +84,14 @@ public class Client {
                 NSLog("failure in Client.request(\(endpoint)): \(error)")
                 completion(.Failure(error))
             } else {
-                self.completeWithResponse(response, object!, error, completion)
+                self.completeWithResponse(response, object!, error, completion: completion)
             }
         }
     }
     
     private func completeWithResponse<T: ResponseItem>(response: NSHTTPURLResponse?, _ jsonObject: AnyObject, _ error: NSError?, completion: Response<T> -> Void) {
         if let responseItem = T(SwiftyJSON.JSON(jsonObject)) {
-            completion(Response.Success(responseItem))
+            completion(Response.Success(Box(responseItem)))
         } else {
             NSLog("failure in completeWithResponse")
             completion(.Failure(error))
@@ -101,8 +101,15 @@ public class Client {
 
 
 public enum Response<T> {
-    case Success(@autoclosure() -> T) // workaround for Swift compiler error
+    case Success(Box<T>)
     case Failure(NSError?)
+}
+
+public class Box<T> {
+    public let value: T
+    public init(_ value: T) {
+        self.value = value
+    }
 }
 
 

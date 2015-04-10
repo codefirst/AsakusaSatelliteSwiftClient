@@ -49,7 +49,7 @@ public class TwitterAuthViewController: UIViewController, UIWebViewDelegate {
     // MARK: UIWebViewDelegate
     
     private func isRedirectedBackToAsakusaSatellite(request: NSURLRequest) -> Bool {
-        return request.URL.absoluteString == accountURL.absoluteString
+        return request.URL?.absoluteString == accountURL.absoluteString
     }
     
     public func webView(webView: UIWebView, shouldStartLoadWithRequest request: NSURLRequest, navigationType: UIWebViewNavigationType) -> Bool {
