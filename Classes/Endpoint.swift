@@ -188,15 +188,12 @@ public class PostMessage: ResponseItem {
     public required init?(_ json: SwiftyJSON.JSON) {
         let status = json["status"].string
         let error = json["error"].string
-        if status != "ok" || error != nil  {
-            messageID = ""
-            return nil
-        }
+        let messageID = json["message_id"].string
         
-        if let messageID = json["message_id"].string {
-            self.messageID = messageID
+        if status == "ok" && error == nil, let id = messageID {
+            self.messageID = id
         } else {
-            messageID = ""
+            self.messageID = ""
             return nil
         }
     }
