@@ -20,8 +20,8 @@ class ViewController: UIViewController, UITextFieldDelegate, UITextViewDelegate 
     let usernameLabel = UILabel()
     let roomIDToPostField = UITextField()
     let messageToPostField = UITextField()
-    let postButton = UIButton.buttonWithType(.System) as UIButton
-    let listButton = UIButton.buttonWithType(.System) as UIButton
+    let postButton = UIButton.buttonWithType(.System) as! UIButton
+    let listButton = UIButton.buttonWithType(.System) as! UIButton
     let messagesTextView = UITextView()
     var pusher: MessagePusherClient?
     
@@ -91,7 +91,7 @@ class ViewController: UIViewController, UITextFieldDelegate, UITextViewDelegate 
         client.user() { response in
             switch response {
             case .Success(let user):
-                self.usernameLabel.text = "logged in as \(user().name)"
+                self.usernameLabel.text = "logged in as \(user.value.name)"
             case .Failure(let error):
                 self.usernameLabel.text = "cannot log in: \(error)"
             }
@@ -100,7 +100,7 @@ class ViewController: UIViewController, UITextFieldDelegate, UITextViewDelegate 
         client.roomList { response in
             switch response {
             case .Success(let many):
-                let rooms = many().items
+                let rooms = many.value.items
                 NSLog("rooms: " + rooms.map{"\($0.name)(\($0.id))"}.description)
             case .Failure(let error):
                 NSLog("failed to list rooms: \(error)")
@@ -125,7 +125,7 @@ class ViewController: UIViewController, UITextFieldDelegate, UITextViewDelegate 
         client.postMessage(messageToPostField.text, roomID: roomIDToPostField.text, files: []) { response in
             switch response {
             case .Success(let postMessage):
-                NSLog("message posted successfully: \(postMessage().messageID)")
+                NSLog("message posted successfully: \(postMessage.value.messageID)")
                 self.messageToPostField.text = ""
             case .Failure(let error):
                 NSLog("failed to post message: \(error)")
@@ -137,7 +137,7 @@ class ViewController: UIViewController, UITextFieldDelegate, UITextViewDelegate 
         client.messageList(roomIDToPostField.text, count: 20, sinceID: nil, untilID: nil, order: .Desc) { response in
             switch response {
             case .Success(let many):
-                let messages = many().items
+                let messages = many.value.items
                 // NSLog("messages (\(messages.count)): \(messages)")
                 self.messagesTextView.text = "\n".join(messages.map{"\($0.name): \($0.body)"})
             case .Failure(let error):
