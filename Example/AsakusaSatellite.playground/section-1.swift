@@ -14,13 +14,15 @@ let c = Client(apiKey: nil)
 c.roomList() { r in
     switch r {
     case .Success(let many):
-        let rooms = many().items
+        let rooms = many.value.items
         for room in rooms {
-            room
+            room.id
+            room.name
+            room.ownerAndMembers
         }
     case .Failure(let error):
         error
     }
 }
 
-XCPSetExecutionShouldContinueIndefinitely(continueIndefinitely: true)
+NSRunLoop.currentRunLoop().runUntilDate(NSDate(timeIntervalSinceNow: 3))
