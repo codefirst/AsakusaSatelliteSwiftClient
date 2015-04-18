@@ -1,4 +1,12 @@
 # AsakusaSatelliteSwiftClient
 AsakusaSatellite API Client for Swift
 
-under development
+## Installation
+
+```ruby
+pod 'AsakusaSatellite'
+```
+
+## Apps using the pod
+
+* [codefirst/AsakusaSatellite-ios](https://github.com/codefirst/AsakusaSatellite-ios)
