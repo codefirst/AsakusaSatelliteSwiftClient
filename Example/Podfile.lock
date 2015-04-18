@@ -1,35 +1,26 @@
 PODS:
   - Alamofire (1.2.0)
   - AsakusaSatellite (0.3.0):
-    - Alamofire (~> 1.1)
+    - Alamofire (~> 1.2)
     - Socket.IO-Client-Swift (~> 2.0)
-    - SwiftyJSON (~> 2.1)
-    - UTIKit (~> 1.0)
+    - SwiftyJSON (~> 2.2)
+    - UTIKit (~> 1.1)
   - Socket.IO-Client-Swift (2.0.5)
-  - SwiftyJSON (2.1.3)
+  - SwiftyJSON (2.2.0)
   - UTIKit (1.1.0)
 
 DEPENDENCIES:
   - AsakusaSatellite (from `../`)
-  - SwiftyJSON (from `https://github.com/SwiftyJSON/SwiftyJSON.git`, branch `xcode6.3`)
 
 EXTERNAL SOURCES:
   AsakusaSatellite:
     :path: "../"
-  SwiftyJSON:
-    :branch: xcode6.3
-    :git: https://github.com/SwiftyJSON/SwiftyJSON.git
-
-CHECKOUT OPTIONS:
-  SwiftyJSON:
-    :commit: 008a09d7ea8b13c03fb59b35c01aad339584a5e1
-    :git: https://github.com/SwiftyJSON/SwiftyJSON.git
 
 SPEC CHECKSUMS:
   Alamofire: d765c5c1713aa64106b0228aaa600a1e6851f68d
-  AsakusaSatellite: d42ae8b42c153ab6c85bb2985169d714cd5f4fc1
+  AsakusaSatellite: 92baf3bf9d89b22d2b97f509d6692e75f0261b05
   Socket.IO-Client-Swift: 8bb823fc27d947c409185a6152a6479b48e69ac6
-  SwiftyJSON: a561c2a840121085bec8a2dfeac97a360fc66901
+  SwiftyJSON: 0b3e6c07af17ff745e77e8e9984097b55c956e5c
   UTIKit: 6c23dc3a08f335f14e48d4f1673dc0ee310b3fa4
 
 COCOAPODS: 0.36.4
