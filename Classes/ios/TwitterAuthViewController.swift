@@ -39,6 +39,8 @@ public class TwitterAuthViewController: UIViewController, UIWebViewDelegate {
         webview.delegate = self
         view.addSubview(webview)
         
+        removeCookies(rootURL: NSURL(string: "https://twitter.com")!)
+        
         // load /auth/twitter with referer /account
         // oauth callback redirects to referer
         let request = NSMutableURLRequest(URL: authTwitterURL)
