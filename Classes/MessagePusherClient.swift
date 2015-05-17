@@ -50,7 +50,12 @@ public class MessagePusherClient: Printable {
     public init(engine: Engine, roomID: String) {
         self.engine = engine
         self.roomID = roomID
-        self.socket = SocketIOClient(socketURL: engine.url)
+        let connectParams: [String: AnyObject] = {
+            switch engine {
+            case .Keima(_, let key): return ["app": key]
+            }
+            }()
+        self.socket = SocketIOClient(socketURL: engine.url, options: ["connectParams": connectParams])
         self.socket.on("connect") { data, ack in
             // NSLog("\(self): on connect")
             ack?()
@@ -87,10 +92,7 @@ public class MessagePusherClient: Printable {
     
     
     public func connect() {
-        switch engine {
-        case .Keima(_, let key): socket.connectWithParams(["app": key])
-        }
-        
+        socket.connect()
     }
     
     public func subscribe() {
