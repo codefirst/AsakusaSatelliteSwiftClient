@@ -30,10 +30,7 @@ public class Client {
     }
     
     private func removeCookies() {
-        let cs = NSHTTPCookieStorage.sharedHTTPCookieStorage()
-        for cookie in (cs.cookiesForURL(NSURL(string: rootURL)!) as? [NSHTTPCookie]) ?? [] {
-            cs.deleteCookie(cookie)
-        }
+        AsakusaSatellite.removeCookies(rootURL: NSURL(string: rootURL)!)
     }
     
     // MARK: - public APIs
@@ -116,5 +113,13 @@ public class Box<T> {
 public enum SortOrder: String {
     case Asc = "asc"
     case Desc = "desc"
+}
+
+
+internal func removeCookies(#rootURL: NSURL) {
+    let cs = NSHTTPCookieStorage.sharedHTTPCookieStorage()
+    for cookie in (cs.cookiesForURL(rootURL) as? [NSHTTPCookie]) ?? [] {
+        cs.deleteCookie(cookie)
+    }
 }
 
