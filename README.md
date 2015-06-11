@@ -1,5 +1,5 @@
 # AsakusaSatelliteSwiftClient
-AsakusaSatellite API Client for Swift
+[AsakusaSatellite](https://github.com/codefirst/AsakusaSatellite) API Client for Swift
 
 ## Installation
 
