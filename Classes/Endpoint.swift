@@ -227,7 +227,7 @@ private let dateFormatter: NSDateFormatter = {
 }()
 
 
-public class Message: ResponseItem, Printable {
+public class Message: ResponseItem, CustomStringConvertible {
     public let id: String
     public let name: String
     public let screenName: String
@@ -273,7 +273,7 @@ public class Message: ResponseItem, Printable {
 }
 
 
-public class Attachment: ResponseItem, Printable {
+public class Attachment: ResponseItem, CustomStringConvertible {
     public let url: String // can be relative URL
     public let filename: String
     public let contentType: String

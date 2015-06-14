@@ -11,7 +11,7 @@ import Socket_IO_Client_Swift
 import SwiftyJSON
 
 
-public class MessagePusherClient: Printable {
+public class MessagePusherClient: CustomStringConvertible {
     let engine: Engine
     let roomID: String
     let socket: SocketIOClient
@@ -20,7 +20,7 @@ public class MessagePusherClient: Printable {
     public var onMessageCreate: (Message -> Void)?
     
     
-    public enum Engine: Printable {
+    public enum Engine: CustomStringConvertible {
         case Keima(url: String, key: String)
         
         public init?(messagePusher: ServiceInfo.MessagePusher) {
@@ -55,31 +55,33 @@ public class MessagePusherClient: Printable {
             case .Keima(_, let key): return ["app": key]
             }
             }()
-        self.socket = SocketIOClient(socketURL: engine.url, options: ["connectParams": connectParams])
+        self.socket = SocketIOClient(socketURL: engine.url, opts: ["connectParams": connectParams])
         self.socket.on("connect") { data, ack in
             // NSLog("\(self): on connect")
-            ack?()
+            ack?([])
             self.subscribe()
         }
         self.socket.on("message_create") { data, ack in
             // NSLog("\(self): on message_create")
-            ack?()
+            ack?([])
             
             // args matches Pusher interface and thus: [0] => ID?, [1] => app content json
             if let args = data as? [String] {
                 if args.count < 2 { NSLog("\(self) unexpected message_create args: \(data)"); return }
                 
-                let contentJsonObject: AnyObject? = NSJSONSerialization.JSONObjectWithData(
-                    args[1].dataUsingEncoding(NSUTF8StringEncoding, allowLossyConversion: true) ?? NSData(),
-                    options: .AllowFragments,
-                    error: nil)
-                if contentJsonObject == nil { NSLog("\(self) cannot parse json: \(data)"); return }
-                let contentJson = SwiftyJSON.JSON(contentJsonObject!)["content"]
-                
-                if let message = Message(contentJson) {
-                    self.onMessageCreate?(message)
-                } else {
-                    NSLog("error in creating message from json: \(contentJson)")
+                do {
+                    let contentJsonObject = try NSJSONSerialization.JSONObjectWithData(
+                        args[1].dataUsingEncoding(NSUTF8StringEncoding, allowLossyConversion: true) ?? NSData(),
+                        options: .AllowFragments)
+                    let contentJson = SwiftyJSON.JSON(contentJsonObject)["content"]
+                    
+                    if let message = Message(contentJson) {
+                        self.onMessageCreate?(message)
+                    } else {
+                        NSLog("error in creating message from json: \(contentJson)")
+                    }
+                } catch {
+                    NSLog("\(self) cannot parse json: \(data)")
                 }
             }
         }

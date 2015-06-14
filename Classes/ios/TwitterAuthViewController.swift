@@ -34,12 +34,12 @@ public class TwitterAuthViewController: UIViewController, UIWebViewDelegate {
     public override func viewDidLoad() {
         title = NSLocalizedString("Sign in with Twitter", comment: "")
         
-        webview.autoresizingMask = .FlexibleWidth | .FlexibleHeight
+        webview.autoresizingMask = [.FlexibleWidth, .FlexibleHeight]
         webview.frame = view.bounds
         webview.delegate = self
         view.addSubview(webview)
         
-        removeCookies(rootURL: NSURL(string: "https://twitter.com")!)
+        removeCookiesForURL(NSURL(string: "https://twitter.com")!)
         
         // load /auth/twitter with referer /account
         // oauth callback redirects to referer
@@ -84,12 +84,12 @@ public class TwitterAuthViewController: UIViewController, UIWebViewDelegate {
         }
     }
     
-    public func webView(webView: UIWebView, didFailLoadWithError error: NSError) {
+    public func webView(webView: UIWebView, didFailLoadWithError error: NSError?) {
         UIApplication.sharedApplication().networkActivityIndicatorVisible = false
         
         let ac = UIAlertController(
             title: NSLocalizedString("Cannot Load", comment: ""),
-            message: error.localizedDescription,
+            message: error?.localizedDescription,
             preferredStyle: .Alert)
         ac.addAction(UIAlertAction(title: "OK", style: .Default, handler: { _ in
             ac.dismissViewControllerAnimated(true, completion: nil)

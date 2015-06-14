@@ -30,7 +30,7 @@ public class Client {
     }
     
     private func removeCookies() {
-        AsakusaSatellite.removeCookies(rootURL: NSURL(string: rootURL)!)
+        AsakusaSatellite.removeCookiesForURL(NSURL(string: rootURL)!)
     }
     
     // MARK: - public APIs
@@ -62,12 +62,12 @@ public class Client {
         serviceInfo { response in
             switch response {
             case .Success(let serviceInfo):
-                if let engine = MessagePusherClient.Engine(messagePusher: serviceInfo.value.messagePusher) {
+                if let engine = MessagePusherClient.Engine(messagePusher: serviceInfo.messagePusher) {
                     completion(MessagePusherClient(engine: engine, roomID: roomID))
                 } else {
                     completion(nil)
                 }
-            case .Failure(let error):
+            case .Failure(_):
                 completion(nil)
             }
         }
@@ -88,7 +88,7 @@ public class Client {
     
     private func completeWithResponse<T: ResponseItem>(response: NSHTTPURLResponse?, _ jsonObject: AnyObject, _ error: NSError?, completion: Response<T> -> Void) {
         if let responseItem = T(SwiftyJSON.JSON(jsonObject)) {
-            completion(Response.Success(Box(responseItem)))
+            completion(Response.Success(responseItem))
         } else {
             NSLog("failure in completeWithResponse")
             completion(.Failure(error))
@@ -98,15 +98,8 @@ public class Client {
 
 
 public enum Response<T> {
-    case Success(Box<T>)
-    case Failure(NSError?)
-}
-
-public class Box<T> {
-    public let value: T
-    public init(_ value: T) {
-        self.value = value
-    }
+    case Success(T)
+    case Failure(ErrorType?)
 }
 
 
@@ -116,9 +109,9 @@ public enum SortOrder: String {
 }
 
 
-internal func removeCookies(#rootURL: NSURL) {
+internal func removeCookiesForURL(URL: NSURL) {
     let cs = NSHTTPCookieStorage.sharedHTTPCookieStorage()
-    for cookie in (cs.cookiesForURL(rootURL) as? [NSHTTPCookie]) ?? [] {
+    for cookie in cs.cookiesForURL(URL) ?? [] {
         cs.deleteCookie(cookie)
     }
 }
