@@ -15,6 +15,7 @@ DEPENDENCIES:
   - Socket.IO-Client-Swift (from `https://github.com/socketio/socket.io-client-swift.git`,
     branch `swift-2`)
   - SwiftyJSON (from `https://github.com/SwiftyJSON/SwiftyJSON.git`, branch `xcode7`)
+  - UTIKit (from `https://github.com/banjun/UTIKit.git`, branch `xcode7`)
 
 EXTERNAL SOURCES:
   Alamofire:
@@ -28,6 +29,9 @@ EXTERNAL SOURCES:
   SwiftyJSON:
     :branch: xcode7
     :git: https://github.com/SwiftyJSON/SwiftyJSON.git
+  UTIKit:
+    :branch: xcode7
+    :git: https://github.com/banjun/UTIKit.git
 
 CHECKOUT OPTIONS:
   Alamofire:
@@ -39,6 +43,9 @@ CHECKOUT OPTIONS:
   SwiftyJSON:
     :commit: d93505a2d0e27eeb74d8a0d1bdc8a987ce6ea85d
     :git: https://github.com/SwiftyJSON/SwiftyJSON.git
+  UTIKit:
+    :commit: a77cd6f97cdff36258493f68cb1c35f881b522a1
+    :git: https://github.com/banjun/UTIKit.git
 
 SPEC CHECKSUMS:
   Alamofire: 11a6022f5089887d92ffb5a3014c97a0a915ab98

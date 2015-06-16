@@ -24,7 +24,7 @@ public enum Endpoint {
     case AddDevice(deviceToken: NSData, name: String)
     
     func URLRequest(baseURL: String, apiKey: String?) -> NSURLRequest {
-        let (method: Alamofire.Method, path: String, parameters: [String: AnyObject]?, body: NSData?, requiresApiKey: Bool) = {
+        let (method, path, parameters, body, requiresApiKey) = { () -> (Alamofire.Method, String, [String: AnyObject]?, NSData?, Bool) in
             switch self {
             case .ServiceInfo: return (.GET, "/service/info.json", nil, nil, false)
             case .User: return (.GET, "/user.json", nil, nil, true)

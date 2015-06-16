@@ -14,7 +14,7 @@ let c = Client(apiKey: nil)
 c.roomList() { r in
     switch r {
     case .Success(let many):
-        let rooms = many.value.items
+        let rooms = many.items
         for room in rooms {
             room.id
             room.name
