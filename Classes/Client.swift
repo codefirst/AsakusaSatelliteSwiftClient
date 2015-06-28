@@ -99,7 +99,7 @@ public class Client {
 
 public enum Response<T> {
     case Success(T)
-    case Failure(ErrorType?)
+    case Failure(NSError?)
 }
 
 
