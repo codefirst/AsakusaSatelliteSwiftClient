@@ -60,7 +60,7 @@ public enum Endpoint {
                 params["room_id"] = roomID
                 params["count"] = count
                 params["since_id"] = sinceID
-                params["until_id"] = untilID
+                if let untilID = untilID { params["until_id"] = untilID } // workaround for Xcode 7b3: "" is set when untilID = nil
                 params["order"] = order?.rawValue
                 return (.GET, "/message/list.json", params, nil, true)
             case let .AddDevice(deviceToken, name):
