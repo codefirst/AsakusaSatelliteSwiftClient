@@ -100,19 +100,78 @@ public enum Endpoint {
 }
 
 
-public protocol ResponseItem {
-    init?(_ json: SwiftyJSON.JSON)
+public protocol APIModel {
+    var json: SwiftyJSON.JSON { get }
+    init?(json: SwiftyJSON.JSON)
+}
+
+extension APIModel {
+    public func saveToFile(path: String) -> Bool {
+        do {
+            guard let s = json.rawString() else { return false }
+            try s.writeToFile(path, atomically: true, encoding: NSUTF8StringEncoding)
+            return true
+        } catch _ {
+            return false
+        }
+    }
+    
+    public init?(file path: String) {
+        if let json = (NSData(contentsOfFile: path).map{SwiftyJSON.JSON(data: $0, options: .AllowFragments, error: nil)}) {
+            self.init(json: json)
+        } else {
+            return nil
+        }
+    }
 }
 
 
-public class ServiceInfo: ResponseItem {
-    public class MessagePusher {
+public struct Many<T: APIModel>: APIModel {
+    public let json: JSON
+    
+    public let items: [T]
+    
+    public init?(json: JSON) {
+        self.json = json
+        
+        guard let array = json.array else { return nil }
+        
+        var items = [T]()
+        for a in array {
+            guard let item = T(json: a) else {
+                NSLog("cannot init from json: \(a)")
+                return nil
+            }
+            items.append(item)
+        }
+        self.items = items
+    }
+}
+
+
+public struct Nothing: APIModel {
+    public let json: JSON
+    
+    public init?(json: JSON) {
+        self.json = json
+    }
+}
+
+
+public struct ServiceInfo: APIModel {
+    public let json: JSON
+    
+    public struct MessagePusher: APIModel {
+        public let json: JSON
+        
         public let name: String?
         public let param: [String: String]
         public var url: String? { return param["url"] }
         public var key: String? { return param["key"] }
         
-        init(_ json: SwiftyJSON.JSON) {
+        public init?(json: JSON) {
+            self.json = json
+            
             name = json["name"].string
             var param = [String: String]()
             for (k, v) in json["param"].dictionaryValue {
@@ -123,40 +182,41 @@ public class ServiceInfo: ResponseItem {
     }
     public let messagePusher: MessagePusher
     
-    public required init?(_ json: SwiftyJSON.JSON) {
-        messagePusher = MessagePusher(json["message_pusher"])
+    public init?(json: JSON) {
+        self.json = json
+        guard let messagePusher = MessagePusher(json: json["message_pusher"]) else { return nil }
+        
+        self.messagePusher = messagePusher
     }
 }
 
 
-public class User: ResponseItem {
+public struct User: APIModel {
+    public let json: JSON
+    
     public let id: String
     public let name: String
     public let screenName: String
     public let profileImageURL: String
-    // NOTE: user_profiles for each rooms are not yet supported
     
-    public required init?(_ json: SwiftyJSON.JSON) {
-        if let id = json["id"].string,
+    public init?(json: JSON) {
+        self.json = json
+        guard let id = json["id"].string,
             name = json["name"].string,
             screenName = json["screen_name"].string,
-            profileImageURL = json["profile_image_url"].string {
-                self.id = id
-                self.name = name
-                self.screenName = screenName
-                self.profileImageURL = profileImageURL
-        } else {
-            id = ""
-            name = ""
-            screenName = ""
-            profileImageURL = ""
-            return nil
-        }
+            profileImageURL = json["profile_image_url"].string else { return nil }
+        
+        self.id = id
+        self.name = name
+        self.screenName = screenName
+        self.profileImageURL = profileImageURL
     }
 }
 
 
-public class Room: ResponseItem {
+public struct Room: APIModel {
+    public let json: JSON
+    
     public let id: String
     public let name: String
     public let owner: User?
@@ -165,57 +225,30 @@ public class Room: ResponseItem {
         return compact([owner]) + members
     }
     
-    public required init?(_ json: SwiftyJSON.JSON) {
-        if let id = json["id"].string,
-            name = json["name"].string {
-                self.id = id
-                self.name = name
-                self.owner = User(json["user"])
-                self.members = compact(json["members"].arrayValue.map{User($0)})
-        } else {
-            id = ""
-            name = ""
-            owner = nil
-            members = []
-            return nil
-        }
-    }
-}
-
-
-public class PostMessage: ResponseItem {
-    public let messageID: String
-    public required init?(_ json: SwiftyJSON.JSON) {
-        let status = json["status"].string
-        let error = json["error"].string
-        let messageID = json["message_id"].string
+    public init?(json: JSON) {
+        self.json = json
+        guard let id = json["id"].string,
+            name = json["name"].string else { return nil }
         
-        if status == "ok" && error == nil, let id = messageID {
-            self.messageID = id
-        } else {
-            self.messageID = ""
-            return nil
-        }
+        self.id = id
+        self.name = name
+        self.owner = User(json: json["user"])
+        self.members = compact(json["members"].arrayValue.map{User(json: $0)})
     }
 }
 
 
-public class Many<T: ResponseItem>: ResponseItem {
-    public let items: [T]
-    public required init?(_ json: SwiftyJSON.JSON) {
-        var items = [T]()
-        if let array = json.array {
-            for a in array {
-                if let item = T(a) {
-                    items.append(item)
-                } else {
-                    NSLog("cannot init from json: \(a)")
-                    self.items = []
-                    return nil
-                }
-            }
-        }
-        self.items = items
+public struct PostMessage: APIModel {
+    public let json: JSON
+    
+    public let messageID: String
+    
+    public init?(json: JSON) {
+        self.json = json
+        if json["status"].string != "ok" || json["error"].string != nil { return nil }
+        guard let messageID = json["message_id"].string else { return nil }
+        
+        self.messageID = messageID
     }
 }
 
@@ -227,7 +260,9 @@ private let dateFormatter: NSDateFormatter = {
 }()
 
 
-public class Message: ResponseItem, CustomStringConvertible {
+public struct Message: APIModel, CustomStringConvertible {
+    public let json: JSON
+    
     public let id: String
     public let name: String
     public let screenName: String
@@ -238,33 +273,25 @@ public class Message: ResponseItem, CustomStringConvertible {
     public let attachments: [Attachment]
     public var imageAttachments: [Attachment] { return attachments.filter{$0.contentType.hasPrefix("image/")} }
     
-    public required init?(_ json: SwiftyJSON.JSON) {
-        if let id = json["id"].string,
+    public init?(json: JSON) {
+        self.json = json
+        
+        guard let id = json["id"].string,
             name = json["name"].string,
             screenName = json["screen_name"].string,
             body = json["body"].string,
             htmlBody = json["html_body"].string,
             profileImageURL = json["profile_image_url"].string,
-            createdAt = json["created_at"].string.flatMap({dateFormatter.dateFromString($0)}) {
-                self.id = id
-                self.name = name
-                self.screenName = screenName
-                self.body = body
-                self.htmlBody = htmlBody
-                self.profileImageURL = profileImageURL
-                self.createdAt = createdAt
-        } else {
-            id = ""
-            name = ""
-            screenName = ""
-            body = ""
-            htmlBody = ""
-            createdAt = NSDate()
-            profileImageURL = ""
-            attachments = []
-            return nil
-        }
-        self.attachments = compact(json["attachment"].arrayValue.map{Attachment($0)})
+            createdAt = json["created_at"].string.flatMap({dateFormatter.dateFromString($0)}) else { return nil }
+        
+        self.id = id
+        self.name = name
+        self.screenName = screenName
+        self.body = body
+        self.htmlBody = htmlBody
+        self.profileImageURL = profileImageURL
+        self.createdAt = createdAt
+        self.attachments = compact(json["attachment"].arrayValue.map{Attachment(json: $0)})
     }
     
     public var description: String {
@@ -273,42 +300,27 @@ public class Message: ResponseItem, CustomStringConvertible {
 }
 
 
-public class Attachment: ResponseItem, CustomStringConvertible {
+public struct Attachment: APIModel, CustomStringConvertible {
+    public let json: JSON
+    
     public let url: String // can be relative URL
     public let filename: String
     public let contentType: String
     
-    public required init?(_ json: SwiftyJSON.JSON) {
-        if let url = json["url"].string,
+    public init?(json: JSON) {
+        self.json = json
+        
+        guard let url = json["url"].string,
             filename = json["filename"].string,
-            contentType = json["content_type"].string {
-                self.url = url
-                self.filename = filename
-                self.contentType = contentType
-        } else {
-            url = ""
-            filename = ""
-            contentType = ""
-            return nil
-        }
+            contentType = json["content_type"].string else { return nil }
+        
+        self.url = url
+        self.filename = filename
+        self.contentType = contentType
     }
     
     public var description: String {
         return "Attachment([\(contentType)] \(filename) at \(url))"
-    }
-}
-
-
-public class RawJSON: ResponseItem {
-    public let json: SwiftyJSON.JSON
-    public required init?(_ json: SwiftyJSON.JSON) {
-        self.json = json
-    }
-}
-
-
-public class Nothing: ResponseItem {
-    public required init?(_ json: SwiftyJSON.JSON) {
     }
 }
 
