@@ -1,7 +1,7 @@
 platform :ios, '8.0'
 use_frameworks!
 
-link_with 'AsakusaSatelliteSwiftClientExample', 'AsakusaSatelliteSwiftClientExampleTests'
+link_with 'AsakusaSatelliteSwiftClientExample'
 
 pod 'AsakusaSatellite', :path => '../'
 
@@ -11,3 +11,7 @@ pod 'SwiftyJSON', :git => 'https://github.com/SwiftyJSON/SwiftyJSON.git', :branc
 pod 'Socket.IO-Client-Swift', :git => 'https://github.com/socketio/socket.io-client-swift.git', :branch => 'swift-2'
 pod 'UTIKit', :git => 'https://github.com/banjun/UTIKit.git', :branch => 'xcode7'
 
+target 'AsakusaSatelliteSwiftClientExampleTests' do
+    pod 'Quick'
+    pod 'Nimble', '2.0.0-rc.1'
+end
