@@ -57,17 +57,17 @@ public class MessagePusherClient: CustomStringConvertible {
             }()
         self.socket = SocketIOClient(socketURL: engine.url, opts: ["connectParams": connectParams])
         self.socket.on("connect") { data, ack in
-            // NSLog("\(self): on connect")
+            // NSLog("%@", "\(self): on connect")
             ack?([])
             self.subscribe()
         }
         self.socket.on("message_create") { data, ack in
-            // NSLog("\(self): on message_create")
+            // NSLog("%@", "\(self): on message_create")
             ack?([])
             
             // args matches Pusher interface and thus: [0] => ID?, [1] => app content json
             if let args = data as? [String] {
-                if args.count < 2 { NSLog("\(self) unexpected message_create args: \(data)"); return }
+                if args.count < 2 { NSLog("%@", "\(self) unexpected message_create args: \(data)"); return }
                 
                 do {
                     let contentJsonObject = try NSJSONSerialization.JSONObjectWithData(
@@ -78,10 +78,10 @@ public class MessagePusherClient: CustomStringConvertible {
                     if let message = Message(json: contentJson) {
                         self.onMessageCreate?(message)
                     } else {
-                        NSLog("error in creating message from json: \(contentJson)")
+                        NSLog("%@", "error in creating message from json: \(contentJson)")
                     }
                 } catch {
-                    NSLog("\(self) cannot parse json: \(data)")
+                    NSLog("%@", "\(self) cannot parse json: \(data)")
                 }
             }
         }

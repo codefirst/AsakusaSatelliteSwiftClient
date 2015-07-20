@@ -81,7 +81,7 @@ public enum Endpoint {
             getRequest.HTTPMethod = Method.GET.rawValue
             let (request, error) = Alamofire.ParameterEncoding.URL.encode(getRequest, parameters: parameters) // Alamofire encode params into body when POST
             if let e = error {
-                NSLog("error during creating request: \(e)")
+                NSLog("%@", "error during creating request: \(e)")
             }
             return request
             }()

@@ -57,7 +57,7 @@ public class TwitterAuthViewController: UIViewController, UIWebViewDelegate {
     public func webView(webView: UIWebView, shouldStartLoadWithRequest request: NSURLRequest, navigationType: UIWebViewNavigationType) -> Bool {
         if isRedirectedBackToAsakusaSatellite(request) {
             // TODO: display HUD
-            NSLog("Getting API Key...")
+            NSLog("%@", "Getting API Key...")
         }
         return true
     }
@@ -72,7 +72,7 @@ public class TwitterAuthViewController: UIViewController, UIWebViewDelegate {
         if isRedirectedBackToAsakusaSatellite(webview.request!) {
             // did load /account on AsakusaSatellite
             // TODO: display HUD
-            NSLog("Completed")
+            NSLog("%@", "Completed")
             
             // get apiKey from text field
             let js = "$('#account_secret_key').attr('value')"

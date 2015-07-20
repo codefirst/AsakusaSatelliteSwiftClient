@@ -51,7 +51,7 @@ public struct Many<T: APIModel>: APIModel {
         var items = [T]()
         for a in array {
             guard let item = T(json: a) else {
-                NSLog("cannot init from json: \(a)")
+                NSLog("%@", "cannot init from json: \(a)")
                 return nil
             }
             items.append(item)
