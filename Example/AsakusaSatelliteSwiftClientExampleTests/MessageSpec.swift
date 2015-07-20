@@ -58,6 +58,15 @@ class MessageSpec: QuickSpec {
                 expect(m2.profileImageURL).to(equal(m1.profileImageURL))
                 expect(m2.createdAt).to(equal(m1.createdAt))
             }
+            
+            it ("deserialize multiple messages") {
+                guard let messages = Many<Message>(file: testDataPath("messages.json")),
+                    m1 = messages.items.first,
+                    m2 = messages.items.last else { return fail() }
+                
+                expect(m1.body).to(equal("example message1"))
+                expect(m2.body).to(equal("example message2"))
+            }
         }
     }
 }

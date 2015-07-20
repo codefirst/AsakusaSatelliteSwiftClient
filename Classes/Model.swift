@@ -16,9 +16,11 @@ public protocol APIModel {
 }
 
 extension APIModel {
+    var jsonString: String? { return json.rawString(NSUTF8StringEncoding, options: .PrettyPrinted) }
+    
     public func saveToFile(path: String) -> Bool {
         do {
-            guard let s = json.rawString() else { return false }
+            guard let s = jsonString else { return false }
             try s.writeToFile(path, atomically: true, encoding: NSUTF8StringEncoding)
             return true
         } catch _ {
