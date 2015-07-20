@@ -58,6 +58,10 @@ public struct Many<T: APIModel>: APIModel {
         }
         self.items = items
     }
+    
+    public init?(items: [T]) {
+        self.init(json: JSON(items.map{$0.json}))
+    }
 }
 
 
