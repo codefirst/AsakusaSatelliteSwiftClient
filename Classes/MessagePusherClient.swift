@@ -75,7 +75,7 @@ public class MessagePusherClient: CustomStringConvertible {
                         options: .AllowFragments)
                     let contentJson = SwiftyJSON.JSON(contentJsonObject)["content"]
                     
-                    if let message = Message(contentJson) {
+                    if let message = Message(json: contentJson) {
                         self.onMessageCreate?(message)
                     } else {
                         NSLog("error in creating message from json: \(contentJson)")
