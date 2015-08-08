@@ -76,12 +76,13 @@ public class Client {
     // MARK: -
     
     private func request<T: APIModel>(endpoint: Endpoint, requestModifier: (Request -> Request) = {$0}, completion: Response<T> -> Void) {
-        requestModifier(Alamofire.request(endpoint.URLRequest(apiBaseURL, apiKey: apiKey))).responseJSON { (request, response, object, error) -> Void in
-            if object == nil || error != nil {
+        requestModifier(Alamofire.request(endpoint.URLRequest(apiBaseURL, apiKey: apiKey))).responseJSON { (request, response, result) -> Void in
+            switch result {
+            case .Success(let value):
+                self.completeWithResponse(response, value, nil, completion: completion)
+            case .Failure(_, let error):
                 NSLog("%@", "failure in Client.request(\(endpoint)): \(error)")
                 completion(.Failure(error))
-            } else {
-                self.completeWithResponse(response, object!, error, completion: completion)
             }
         }
     }

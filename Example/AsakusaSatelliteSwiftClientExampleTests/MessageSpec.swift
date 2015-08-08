@@ -14,9 +14,10 @@ import Nimble
 
 
 private func testDataPath(subpath: String) -> String {
-    return NSBundle(forClass: MessageSpec.self).pathForResource(subpath.lastPathComponent.stringByDeletingPathExtension,
-        ofType: subpath.pathExtension,
-        inDirectory: subpath.stringByDeletingLastPathComponent)!
+    let s = subpath as NSString
+    return NSBundle(forClass: MessageSpec.self).pathForResource((s.lastPathComponent as NSString).stringByDeletingPathExtension,
+        ofType: s.pathExtension,
+        inDirectory: s.stringByDeletingLastPathComponent)!
 }
 
 private func testJSON(subpath: String) -> JSON {
@@ -34,7 +35,7 @@ class MessageSpec: QuickSpec {
         }
         
         describe ("serialize") {
-            let serializedFile = NSTemporaryDirectory().stringByAppendingPathComponent("serialized.json")
+            let serializedFile = (NSTemporaryDirectory() as NSString).stringByAppendingPathComponent("serialized.json")
             
             beforeEach {
                 do {try NSFileManager.defaultManager().removeItemAtPath(serializedFile)} catch _ {}

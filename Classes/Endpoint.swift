@@ -39,8 +39,9 @@ public enum Endpoint {
                     for f in files {
                         if let data = NSData(contentsOfFile: f) {
                             let sequenceNumber = index > 0 ? "-\(index)" : ""
-                            let filename = "AsakusaSat\(sequenceNumber).\(f.pathExtension)"
-                            let mimeType: String = UTI(filenameExtension: f.pathExtension).MIMEType ?? "application/octet-stream"
+                            let ext = (f as NSString).pathExtension
+                            let filename = "AsakusaSat\(sequenceNumber).\(ext)"
+                            let mimeType: String = UTI(filenameExtension: ext).MIMEType ?? "application/octet-stream"
                             
                             body.appendData("--\(kBoundary)\(crlf)".dataUsingEncoding(NSUTF8StringEncoding)!)
                             body.appendData("Content-Disposition: form-data; name=\"files[\(filename)]\"; filename=\"\(filename)\"\(crlf)".dataUsingEncoding(NSUTF8StringEncoding)!)
@@ -77,7 +78,7 @@ public enum Endpoint {
     
     static func URLRequest(baseURL: String, method: Alamofire.Method, path: String, parameters: [String: AnyObject]?, body: NSData?) -> NSURLRequest {
         let urlRequestWithParams: NSURLRequest = {
-            let getRequest = NSMutableURLRequest(URL: NSURL(string: baseURL.stringByAppendingPathComponent(path))!)
+            let getRequest = NSMutableURLRequest(URL: NSURL(string: (baseURL as NSString).stringByAppendingPathComponent(path))!)
             getRequest.HTTPMethod = Method.GET.rawValue
             let (request, error) = Alamofire.ParameterEncoding.URL.encode(getRequest, parameters: parameters) // Alamofire encode params into body when POST
             if let e = error {

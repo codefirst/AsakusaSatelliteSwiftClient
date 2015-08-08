@@ -1,14 +1,14 @@
 PODS:
-  - Alamofire (1.2.3)
+  - Alamofire (1.3.0)
   - AsakusaSatellite (0.3.2):
     - Alamofire (~> 1.2)
     - Socket.IO-Client-Swift (~> 2.3)
     - SwiftyJSON (~> 2.2)
     - UTIKit (~> 1.1)
-  - Nimble (2.0.0-rc.1)
-  - Quick (0.5.0)
-  - Socket.IO-Client-Swift (2.3.10)
-  - SwiftyJSON (2.2.0)
+  - Nimble (2.0.0-rc.2)
+  - Quick (0.5.1)
+  - Socket.IO-Client-Swift (2.4.0)
+  - SwiftyJSON (2.2.1)
   - UTIKit (1.1.0)
 
 DEPENDENCIES:
@@ -45,31 +45,31 @@ EXTERNAL SOURCES:
 
 CHECKOUT OPTIONS:
   Alamofire:
-    :commit: fd71afb3a0af2042b9f05a6b9f29317ad4903703
+    :commit: 61d6ddf9c91da83a062cbe29dc6b7f6a0a5d8789
     :git: https://github.com/Alamofire/Alamofire.git
   Nimble:
-    :commit: a804949542eb2f299b823ffb36936aec54fe0db6
+    :commit: a6b4f6553b8d8662cb8fb4f9c0624e30576d6075
     :git: https://github.com/Quick/Nimble.git
   Quick:
-    :commit: e3c802be6c55710b39dba73caab9f234932c2ed7
+    :commit: 4f7480ff9560e3791096e1a58ce09b6c0a8c926c
     :git: https://github.com/Quick/Quick.git
   Socket.IO-Client-Swift:
-    :commit: 94a3844181ae51ceb457c636a1f6398aabaff378
+    :commit: 469caf1b5436aaaeaa1599107155fa2f3984e54c
     :git: https://github.com/socketio/socket.io-client-swift.git
   SwiftyJSON:
-    :commit: 999ae8340492d6e9b42f28f332cbd591509de079
+    :commit: 45ca854ce75948858f65e31fbc58cbf214669250
     :git: https://github.com/SwiftyJSON/SwiftyJSON.git
   UTIKit:
-    :commit: a77cd6f97cdff36258493f68cb1c35f881b522a1
+    :commit: bececa8ac63c39944e76d4c87640cda8b6159a6a
     :git: https://github.com/banjun/UTIKit.git
 
 SPEC CHECKSUMS:
-  Alamofire: 5550bf0b575ed1a4bf9be572f9463e1015cc169e
-  AsakusaSatellite: 00bd59bf56545cff4e07e5cf106c97f9f606a47c
-  Nimble: 7ab11d79c4f70cb6b5a4a01685ae90243345c8ee
-  Quick: 32ee0b5feeb3ec2c9f2db120c4bb319db6625e3c
-  Socket.IO-Client-Swift: 8ee3936a47c7d38783783dca9f9dccc210d9b265
-  SwiftyJSON: 0b3e6c07af17ff745e77e8e9984097b55c956e5c
-  UTIKit: 6c23dc3a08f335f14e48d4f1673dc0ee310b3fa4
+  Alamofire: e57db85401895fda01783b3b9bda5b32d9f347ff
+  AsakusaSatellite: de7456c152e5b4012f3ab8cd28f922fc8574539d
+  Nimble: e3cf5e73a491daf21c2bc88783dbfc55ce8b8e02
+  Quick: 7426537a99e75076d6930c5b6da58006e4a9f38a
+  Socket.IO-Client-Swift: 4e5372e7122b401d9f6bc931a3c8c7b6edf2205f
+  SwiftyJSON: ae2d0a3d68025d136602a33c4ee215091ced3e33
+  UTIKit: 9fa90aa1707fa8fe0523411cb68cc1c97941d8fe
 
-COCOAPODS: 0.37.2
+COCOAPODS: 0.38.2
