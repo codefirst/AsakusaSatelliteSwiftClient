@@ -9,6 +9,7 @@
 import Foundation
 import Alamofire
 import UTIKit
+import SwiftyJSON
 
 
 private let kBoundary = "AsakusaSatellite-boundary-db1235c63fb8967513000351c0482df321505fb7"
@@ -96,6 +97,24 @@ public enum Endpoint {
         }
         
         return request
+    }
+    
+    func modifyJSON(var json: JSON) -> JSON {
+        switch self {
+        case .MessageList(_, _, _, _, .Some(.Asc)):
+            // link messages in a sequence using prevID
+            for i in 1..<(json.count) {
+                json[i]["prev_id"] = json[i - 1]["id"]
+            }
+        case .MessageList(_, _, _, _, .Some(.Desc)):
+            // link messages in a sequence using prevID
+            for i in 0..<(json.count - 1) {
+                json[i]["prev_id"] = json[i + 1]["id"]
+            }
+        default:
+            break
+        }
+        return json
     }
 }
 
