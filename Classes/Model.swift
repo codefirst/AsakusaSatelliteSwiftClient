@@ -180,6 +180,7 @@ public struct Message: APIModel, CustomStringConvertible {
     public let json: JSON
     
     public let id: String
+    public var prevID: String?
     public let name: String
     public let screenName: String
     public let body: String
@@ -201,6 +202,7 @@ public struct Message: APIModel, CustomStringConvertible {
             createdAt = json["created_at"].string.flatMap({dateFormatter.dateFromString($0)}) else { return nil }
         
         self.id = id
+        self.prevID = json["prev_id"].string
         self.name = name
         self.screenName = screenName
         self.body = body
@@ -211,7 +213,7 @@ public struct Message: APIModel, CustomStringConvertible {
     }
     
     public var description: String {
-        return "Message([\(id)] \(createdAt) @\(screenName)(\(name)) ![\(profileImageURL)]: \(body) \(htmlBody))"
+        return "Message([\(id) (prev = \(prevID))] \(createdAt) @\(screenName)(\(name)) ![\(profileImageURL)]: \(body) \(htmlBody))"
     }
 }
 

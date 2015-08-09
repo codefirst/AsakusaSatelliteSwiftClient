@@ -79,7 +79,7 @@ public class Client {
         requestModifier(Alamofire.request(endpoint.URLRequest(apiBaseURL, apiKey: apiKey))).responseJSON { (request, response, result) -> Void in
             switch result {
             case .Success(let value):
-                self.completeWithResponse(response, value, nil, completion: completion)
+                self.completeWithResponse(response, endpoint.modifyJSON(JSON(value)), nil, completion: completion)
             case .Failure(_, let error):
                 NSLog("%@", "failure in Client.request(\(endpoint)): \(error)")
                 completion(.Failure(error))
@@ -87,8 +87,8 @@ public class Client {
         }
     }
     
-    private func completeWithResponse<T: APIModel>(response: NSHTTPURLResponse?, _ jsonObject: AnyObject, _ error: NSError?, completion: Response<T> -> Void) {
-        if let responseItem = T(json: SwiftyJSON.JSON(jsonObject)) {
+    private func completeWithResponse<T: APIModel>(response: NSHTTPURLResponse?, _ json: JSON, _ error: NSError?, completion: Response<T> -> Void) {
+        if let responseItem = T(json: json) {
             completion(Response.Success(responseItem))
         } else {
             NSLog("%@", "failure in completeWithResponse")
