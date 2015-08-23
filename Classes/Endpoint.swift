@@ -1,6 +1,6 @@
 //
 //  Endpoint.swift
-//  
+//
 //
 //  Created by BAN Jun on 2015/03/01.
 //
@@ -12,9 +12,6 @@ import UTIKit
 import SwiftyJSON
 
 
-private let kBoundary = "AsakusaSatellite-boundary-db1235c63fb8967513000351c0482df321505fb7"
-
-
 public enum Endpoint {
     case ServiceInfo
     case User
@@ -24,38 +21,27 @@ public enum Endpoint {
     case AddDevice(deviceToken: NSData, name: String)
     
     func URLRequest(baseURL: String, apiKey: String?) -> NSURLRequest {
-        let (method, path, parameters, body, requiresApiKey) = { () -> (Alamofire.Method, String, [String: AnyObject]?, NSData?, Bool) in
+        let (method, path, parameters, formData, requiresApiKey) = { () -> (Alamofire.Method, String, [String: AnyObject]?, MultipartFormData?, Bool) in
             switch self {
             case .ServiceInfo: return (.GET, "/service/info.json", nil, nil, false)
             case .User: return (.GET, "/user.json", nil, nil, true)
             case .RoomList: return (.GET, "/room/list.json", nil, nil, true)
             case let .PostMessage(message, roomID, files):
-                var body: NSMutableData!
+                var formData: MultipartFormData?
+                
                 if files.count > 0 {
-                    // add multipart (currently Alamofire does not have multipart API)
-                    body = NSMutableData()
-                    let crlf = "\r\n"
-                    let crlfData = crlf.dataUsingEncoding(NSUTF8StringEncoding)!
-                    var index = 0
-                    for f in files {
-                        if let data = NSData(contentsOfFile: f) {
-                            let sequenceNumber = index > 0 ? "-\(index)" : ""
-                            let ext = (f as NSString).pathExtension
-                            let filename = "AsakusaSat\(sequenceNumber).\(ext)"
-                            let mimeType: String = UTI(filenameExtension: ext).MIMEType ?? "application/octet-stream"
-                            
-                            body.appendData("--\(kBoundary)\(crlf)".dataUsingEncoding(NSUTF8StringEncoding)!)
-                            body.appendData("Content-Disposition: form-data; name=\"files[\(filename)]\"; filename=\"\(filename)\"\(crlf)".dataUsingEncoding(NSUTF8StringEncoding)!)
-                            body.appendData("Content-Type: \(mimeType)\(crlf)".dataUsingEncoding(NSUTF8StringEncoding)!)
-                            body.appendData(crlfData)
-                            body.appendData(data)
-                            body.appendData(crlfData)
-                        }
-                        ++index
+                    formData = MultipartFormData()
+                    for (i, f) in files.enumerate() {
+                        guard let data = NSData(contentsOfFile: f) else { continue }
+                        let sequenceNumber = i > 0 ? "-\(i)" : ""
+                        let ext = (f as NSString).pathExtension
+                        let filename = "AsakusaSat\(sequenceNumber).\(ext)"
+                        let mimeType: String = UTI(filenameExtension: ext).MIMEType ?? "application/octet-stream"
+                        
+                        formData?.appendBodyPart(data: data, name: "files[\(filename)]", fileName: filename, mimeType: mimeType)
                     }
-                    body.appendData("--\(kBoundary)--\(crlf)".dataUsingEncoding(NSUTF8StringEncoding)!)
                 }
-                return (.POST, "/message.json", ["room_id": roomID, "message": message], body, true)
+                return (.POST, "/message.json", ["room_id": roomID, "message": message], formData, true)
             case let .MessageList(roomID, count, sinceID, untilID, order):
                 var params = [String: AnyObject]()
                 params["room_id"] = roomID
@@ -74,10 +60,10 @@ public enum Endpoint {
             params["api_key"] = apiKey
         }
         
-        return Endpoint.URLRequest(baseURL, method: method, path: path, parameters: params, body: body)
+        return Endpoint.URLRequest(baseURL, method: method, path: path, parameters: params, formData: formData)
     }
     
-    static func URLRequest(baseURL: String, method: Alamofire.Method, path: String, parameters: [String: AnyObject]?, body: NSData?) -> NSURLRequest {
+    static func URLRequest(baseURL: String, method: Alamofire.Method, path: String, parameters: [String: AnyObject]?, formData: MultipartFormData?) -> NSURLRequest {
         let urlRequestWithParams: NSURLRequest = {
             let getRequest = NSMutableURLRequest(URL: NSURL(string: (baseURL as NSString).stringByAppendingPathComponent(path))!)
             getRequest.HTTPMethod = Method.GET.rawValue
@@ -90,10 +76,14 @@ public enum Endpoint {
         
         let request = NSMutableURLRequest(URL: urlRequestWithParams.URL!)
         request.HTTPMethod = method.rawValue
-        if let b = body {
-            request.addValue("multipart/form-data; boundary=\(kBoundary)", forHTTPHeaderField: "Content-Type")
-            request.addValue("\(b.length)", forHTTPHeaderField: "Content-Length")
-            request.HTTPBody = b
+        
+        if let formData = formData {
+            do {
+                try request.HTTPBody = formData.encode()
+                request.setValue(formData.contentType, forHTTPHeaderField: "Content-Type")
+            } catch _ {
+                
+            }
         }
         
         return request
