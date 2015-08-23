@@ -15,7 +15,7 @@ Pod::Spec.new do |s|
   s.ios.source_files = 'Classes/ios/*.swift'
   s.osx.source_files = ''
   s.requires_arc = true
-  s.dependency "Alamofire", "~> 1.2"
+  s.dependency "Alamofire", "~> 2.0.0-beta1"
   s.dependency "SwiftyJSON", "~> 2.2"
   s.dependency "Socket.IO-Client-Swift", "~> 2.3"
   s.dependency "UTIKit", "~> 1.1"

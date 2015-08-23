@@ -6,7 +6,6 @@ link_with 'AsakusaSatelliteSwiftClientExample'
 pod 'AsakusaSatellite', :path => '../'
 
 # TODO: remove after they're published to the spec repo
-pod 'Alamofire', :git => 'https://github.com/Alamofire/Alamofire.git', :branch => 'swift-2.0'
 pod 'SwiftyJSON', :git => 'https://github.com/SwiftyJSON/SwiftyJSON.git', :branch => 'xcode7'
 pod 'Socket.IO-Client-Swift', :git => 'https://github.com/socketio/socket.io-client-swift.git', :branch => 'swift-2'
 pod 'UTIKit', :git => 'https://github.com/banjun/UTIKit.git', :branch => 'xcode7'
