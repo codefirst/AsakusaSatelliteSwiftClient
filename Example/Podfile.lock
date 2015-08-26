@@ -1,5 +1,5 @@
 PODS:
-  - Alamofire (2.0.0-beta.1)
+  - Alamofire (2.0.0-beta.3)
   - AsakusaSatellite (0.3.2):
     - Alamofire (~> 2.0.0-beta1)
     - Socket.IO-Client-Swift (~> 2.3)
@@ -41,13 +41,13 @@ EXTERNAL SOURCES:
 
 CHECKOUT OPTIONS:
   Nimble:
-    :commit: dbfc4ebd53395361c14eb2c9b13f629fc541bba2
+    :commit: e84623d953d811f74a2afcda4fa0c8121e7dad7d
     :git: https://github.com/Quick/Nimble.git
   Quick:
-    :commit: 6b8507b28767b6fe54cfdc7112ab554505604c95
+    :commit: 1fbcd8a05f6e896e2db66a2e82527b7f24766ef8
     :git: https://github.com/Quick/Quick.git
   Socket.IO-Client-Swift:
-    :commit: 4fdb49ea2fe0a87e5bc6add8259f54a69f38646c
+    :commit: ccd6dcbf0a05d5c0ddc564a1b385beba3715c8c3
     :git: https://github.com/socketio/socket.io-client-swift.git
   SwiftyJSON:
     :commit: f269523ac572979245baa99c8475eab73caf1e9b
@@ -57,7 +57,7 @@ CHECKOUT OPTIONS:
     :git: https://github.com/banjun/UTIKit.git
 
 SPEC CHECKSUMS:
-  Alamofire: 96feccc1e48a735edb92395cf023ba4ed52bdb45
+  Alamofire: 39dddb7d3725d1771b1d2f7099c8bd45bd83ffbb
   AsakusaSatellite: 3b407d13a16164946b6378d9bd8fef5fb7f84cb8
   Nimble: e3cf5e73a491daf21c2bc88783dbfc55ce8b8e02
   Quick: 7426537a99e75076d6930c5b6da58006e4a9f38a

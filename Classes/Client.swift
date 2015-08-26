@@ -82,7 +82,7 @@ public class Client {
                 self.completeWithResponse(response, endpoint.modifyJSON(JSON(value)), nil, completion: completion)
             case .Failure(_, let error):
                 NSLog("%@", "failure in Client.request(\(endpoint)): \(error)")
-                completion(.Failure(error))
+                completion(.Failure(error as NSError))
             }
         }
     }

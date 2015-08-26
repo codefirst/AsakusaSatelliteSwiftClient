@@ -139,7 +139,7 @@ class ViewController: UIViewController, UITextFieldDelegate, UITextViewDelegate 
             case .Success(let many):
                 let messages = many.items
                 // NSLog("messages (\(messages.count)): \(messages)")
-                self.messagesTextView.text = "\n".join(messages.map{"\($0.name): \($0.body)"})
+                self.messagesTextView.text = messages.map{"\($0.name): \($0.body)"}.joinWithSeparator("\n")
             case .Failure(let error):
                 NSLog("failed to list messages: \(error)")
             }
