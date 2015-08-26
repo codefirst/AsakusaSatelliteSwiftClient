@@ -36,7 +36,7 @@ public enum Endpoint {
                         let sequenceNumber = i > 0 ? "-\(i)" : ""
                         let ext = (f as NSString).pathExtension
                         let filename = "AsakusaSat\(sequenceNumber).\(ext)"
-                        let mimeType: String = UTI(filenameExtension: ext).MIMEType ?? "application/octet-stream"
+                        let mimeType: String = UTI(filenameExtension: ext)?.MIMEType ?? "application/octet-stream"
                         
                         formData?.appendBodyPart(data: data, name: "files[\(filename)]", fileName: filename, mimeType: mimeType)
                     }
