@@ -1,68 +1,41 @@
 PODS:
-  - Alamofire (2.0.0-beta.3)
+  - Alamofire (2.0.2)
   - AsakusaSatellite (0.3.2):
-    - Alamofire (~> 2.0.0-beta1)
-    - Socket.IO-Client-Swift (~> 2.3)
+    - Alamofire (~> 2.0)
+    - Socket.IO-Client-Swift (~> 3.0)
     - SwiftyJSON (~> 2.2)
     - UTIKit (~> 1.1)
-  - Nimble (2.0.0-rc.2)
-  - Quick (0.5.1)
-  - Socket.IO-Client-Swift (2.4.0)
-  - SwiftyJSON (2.2.1)
+  - Nimble (2.0.0-rc.3)
+  - Quick (0.6.0)
+  - Socket.IO-Client-Swift (3.0.2)
+  - SwiftyJSON (2.3.0)
   - UTIKit (1.1.0)
 
 DEPENDENCIES:
   - AsakusaSatellite (from `../`)
-  - Nimble (from `https://github.com/Quick/Nimble.git`, branch `swift-2.0`)
-  - Quick (from `https://github.com/Quick/Quick.git`, branch `swift-2.0`)
-  - Socket.IO-Client-Swift (from `https://github.com/socketio/socket.io-client-swift.git`,
-    branch `swift-2`)
-  - SwiftyJSON (from `https://github.com/SwiftyJSON/SwiftyJSON.git`, branch `xcode7`)
+  - Nimble (= 2.0.0-rc.3)
+  - Quick
   - UTIKit (from `https://github.com/cockscomb/UTIKit.git`, branch `swift2`)
 
 EXTERNAL SOURCES:
   AsakusaSatellite:
     :path: "../"
-  Nimble:
-    :branch: swift-2.0
-    :git: https://github.com/Quick/Nimble.git
-  Quick:
-    :branch: swift-2.0
-    :git: https://github.com/Quick/Quick.git
-  Socket.IO-Client-Swift:
-    :branch: swift-2
-    :git: https://github.com/socketio/socket.io-client-swift.git
-  SwiftyJSON:
-    :branch: xcode7
-    :git: https://github.com/SwiftyJSON/SwiftyJSON.git
   UTIKit:
     :branch: swift2
     :git: https://github.com/cockscomb/UTIKit.git
 
 CHECKOUT OPTIONS:
-  Nimble:
-    :commit: e84623d953d811f74a2afcda4fa0c8121e7dad7d
-    :git: https://github.com/Quick/Nimble.git
-  Quick:
-    :commit: 1fbcd8a05f6e896e2db66a2e82527b7f24766ef8
-    :git: https://github.com/Quick/Quick.git
-  Socket.IO-Client-Swift:
-    :commit: ccd6dcbf0a05d5c0ddc564a1b385beba3715c8c3
-    :git: https://github.com/socketio/socket.io-client-swift.git
-  SwiftyJSON:
-    :commit: f269523ac572979245baa99c8475eab73caf1e9b
-    :git: https://github.com/SwiftyJSON/SwiftyJSON.git
   UTIKit:
     :commit: 353fe72d15c0b2b31d5d2862fd44ad99cab71757
     :git: https://github.com/cockscomb/UTIKit.git
 
 SPEC CHECKSUMS:
-  Alamofire: 39dddb7d3725d1771b1d2f7099c8bd45bd83ffbb
-  AsakusaSatellite: 3b407d13a16164946b6378d9bd8fef5fb7f84cb8
-  Nimble: e3cf5e73a491daf21c2bc88783dbfc55ce8b8e02
-  Quick: 7426537a99e75076d6930c5b6da58006e4a9f38a
-  Socket.IO-Client-Swift: 4e5372e7122b401d9f6bc931a3c8c7b6edf2205f
-  SwiftyJSON: ae2d0a3d68025d136602a33c4ee215091ced3e33
+  Alamofire: 8edbab00802a752bb5240cc2abe70e7e881488ad
+  AsakusaSatellite: fe0a619cc285f991fe8be29a38707b4b62c84041
+  Nimble: 9dff98ee195ffe7351d3b2fb01d3a1420fd97948
+  Quick: 563686dbcf0ae0f9f7401ac9cd2d786ee1b7f3d7
+  Socket.IO-Client-Swift: c68c105ee88d03d4610be8764f2e13ca2908de63
+  SwiftyJSON: 8d6b61a70277ef2a5d710d372e06e7e2d87fb9e4
   UTIKit: 9fa90aa1707fa8fe0523411cb68cc1c97941d8fe
 
 COCOAPODS: 0.38.2
