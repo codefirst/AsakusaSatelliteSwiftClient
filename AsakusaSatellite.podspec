@@ -17,6 +17,6 @@ Pod::Spec.new do |s|
   s.requires_arc = true
   s.dependency "Alamofire", "~> 2.0"
   s.dependency "SwiftyJSON", "~> 2.2"
-  s.dependency "Socket.IO-Client-Swift", "~> 3.0"
-  s.dependency "UTIKit", "~> 1.1"
+  s.dependency "Socket.IO-Client-Swift", "~> 3.1"
+  s.dependency "UTIKit", "~> 1.2"
 end

@@ -58,12 +58,12 @@ public class MessagePusherClient: CustomStringConvertible {
         self.socket = SocketIOClient(socketURL: engine.url, opts: ["connectParams": connectParams])
         self.socket.on("connect") { data, ack in
             // NSLog("%@", "\(self): on connect")
-            ack?([])
+            ack?.with([])
             self.subscribe()
         }
         self.socket.on("message_create") { data, ack in
             // NSLog("%@", "\(self): on message_create")
-            ack?([])
+            ack?.with([])
             
             // args matches Pusher interface and thus: [0] => ID?, [1] => app content json
             if let args = data as? [String] {

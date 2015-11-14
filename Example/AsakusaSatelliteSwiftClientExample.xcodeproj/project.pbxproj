@@ -7,8 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		516A534F0071FDCB1989782E /* Pods_AsakusaSatelliteSwiftClientExampleTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FBF4EECD3DFCD570AC26A43C /* Pods_AsakusaSatelliteSwiftClientExampleTests.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
-		6E03A3223AD96CC55F8EF0B1 /* Pods.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 15FC971CE7671698F92EDF0A /* Pods.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
+		516A534F0071FDCB1989782E /* Pods_AsakusaSatelliteSwiftClientExampleTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FBF4EECD3DFCD570AC26A43C /* Pods_AsakusaSatelliteSwiftClientExampleTests.framework */; };
+		6E03A3223AD96CC55F8EF0B1 /* Pods.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 15FC971CE7671698F92EDF0A /* Pods.framework */; };
 		EA5BCA7D1B5CAC0C00F52F8D /* messages.json in Resources */ = {isa = PBXBuildFile; fileRef = EA5BCA7B1B5CAA2300F52F8D /* messages.json */; };
 		EAAC354F1B5C9516002FEE0C /* MessageSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAAC354E1B5C9516002FEE0C /* MessageSpec.swift */; };
 		EAAC35511B5C95A9002FEE0C /* message.json in Resources */ = {isa = PBXBuildFile; fileRef = EAAC35501B5C95A9002FEE0C /* message.json */; };

@@ -5,10 +5,7 @@ link_with 'AsakusaSatelliteSwiftClientExample'
 
 pod 'AsakusaSatellite', :path => '../'
 
-# TODO: remove after they're published to the spec repo
-pod 'UTIKit', :git => 'https://github.com/cockscomb/UTIKit.git', :branch => 'swift2'
-
 target 'AsakusaSatelliteSwiftClientExampleTests' do
     pod 'Quick'
-    pod 'Nimble', '2.0.0-rc.3'
+    pod 'Nimble'
 end

@@ -2,40 +2,31 @@ PODS:
   - Alamofire (2.0.2)
   - AsakusaSatellite (0.3.2):
     - Alamofire (~> 2.0)
-    - Socket.IO-Client-Swift (~> 3.0)
+    - Socket.IO-Client-Swift (~> 3.1)
     - SwiftyJSON (~> 2.2)
-    - UTIKit (~> 1.1)
-  - Nimble (2.0.0-rc.3)
-  - Quick (0.6.0)
-  - Socket.IO-Client-Swift (3.0.2)
-  - SwiftyJSON (2.3.0)
-  - UTIKit (1.1.0)
+    - UTIKit (~> 1.2)
+  - Nimble (3.0.0)
+  - Quick (0.8.0)
+  - Socket.IO-Client-Swift (3.1.6)
+  - SwiftyJSON (2.3.1)
+  - UTIKit (1.2.0)
 
 DEPENDENCIES:
   - AsakusaSatellite (from `../`)
-  - Nimble (= 2.0.0-rc.3)
+  - Nimble
   - Quick
-  - UTIKit (from `https://github.com/cockscomb/UTIKit.git`, branch `swift2`)
 
 EXTERNAL SOURCES:
   AsakusaSatellite:
     :path: "../"
-  UTIKit:
-    :branch: swift2
-    :git: https://github.com/cockscomb/UTIKit.git
-
-CHECKOUT OPTIONS:
-  UTIKit:
-    :commit: 353fe72d15c0b2b31d5d2862fd44ad99cab71757
-    :git: https://github.com/cockscomb/UTIKit.git
 
 SPEC CHECKSUMS:
   Alamofire: 8edbab00802a752bb5240cc2abe70e7e881488ad
-  AsakusaSatellite: fe0a619cc285f991fe8be29a38707b4b62c84041
-  Nimble: 9dff98ee195ffe7351d3b2fb01d3a1420fd97948
-  Quick: 563686dbcf0ae0f9f7401ac9cd2d786ee1b7f3d7
-  Socket.IO-Client-Swift: c68c105ee88d03d4610be8764f2e13ca2908de63
-  SwiftyJSON: 8d6b61a70277ef2a5d710d372e06e7e2d87fb9e4
-  UTIKit: 9fa90aa1707fa8fe0523411cb68cc1c97941d8fe
+  AsakusaSatellite: ccc2c36f456b4060f2c49a93a660401acd0f08b6
+  Nimble: 4c353d43735b38b545cbb4cb91504588eb5de926
+  Quick: 563d0f6ec5f72e394645adb377708639b7dd38ab
+  Socket.IO-Client-Swift: f80e4eec9f067ced71fbcdbfa55bf59ff0248e53
+  SwiftyJSON: 592b53bee5ef3dd9b3bebc6b9cb7ee35426ae8c3
+  UTIKit: ed13be6bc14a625b1f41e24a3bcc6737ee19ff70
 
-COCOAPODS: 0.38.2
+COCOAPODS: 0.39.0
