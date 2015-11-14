@@ -25,7 +25,7 @@ public class TwitterAuthViewController: UIViewController, UIWebViewDelegate {
         super.init(nibName: nil, bundle: nil)
     }
 
-    required public init(coder aDecoder: NSCoder) {
+    required public init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
@@ -34,12 +34,12 @@ public class TwitterAuthViewController: UIViewController, UIWebViewDelegate {
     public override func viewDidLoad() {
         title = NSLocalizedString("Sign in with Twitter", comment: "")
         
-        webview.autoresizingMask = .FlexibleWidth | .FlexibleHeight
+        webview.autoresizingMask = [.FlexibleWidth, .FlexibleHeight]
         webview.frame = view.bounds
         webview.delegate = self
         view.addSubview(webview)
         
-        removeCookies(rootURL: NSURL(string: "https://twitter.com")!)
+        removeCookiesForURL(NSURL(string: "https://twitter.com")!)
         
         // load /auth/twitter with referer /account
         // oauth callback redirects to referer
@@ -57,7 +57,7 @@ public class TwitterAuthViewController: UIViewController, UIWebViewDelegate {
     public func webView(webView: UIWebView, shouldStartLoadWithRequest request: NSURLRequest, navigationType: UIWebViewNavigationType) -> Bool {
         if isRedirectedBackToAsakusaSatellite(request) {
             // TODO: display HUD
-            NSLog("Getting API Key...")
+            NSLog("%@", "Getting API Key...")
         }
         return true
     }
@@ -72,7 +72,7 @@ public class TwitterAuthViewController: UIViewController, UIWebViewDelegate {
         if isRedirectedBackToAsakusaSatellite(webview.request!) {
             // did load /account on AsakusaSatellite
             // TODO: display HUD
-            NSLog("Completed")
+            NSLog("%@", "Completed")
             
             // get apiKey from text field
             let js = "$('#account_secret_key').attr('value')"
@@ -84,12 +84,12 @@ public class TwitterAuthViewController: UIViewController, UIWebViewDelegate {
         }
     }
     
-    public func webView(webView: UIWebView, didFailLoadWithError error: NSError) {
+    public func webView(webView: UIWebView, didFailLoadWithError error: NSError?) {
         UIApplication.sharedApplication().networkActivityIndicatorVisible = false
         
         let ac = UIAlertController(
             title: NSLocalizedString("Cannot Load", comment: ""),
-            message: error.localizedDescription,
+            message: error?.localizedDescription,
             preferredStyle: .Alert)
         ac.addAction(UIAlertAction(title: "OK", style: .Default, handler: { _ in
             ac.dismissViewControllerAnimated(true, completion: nil)

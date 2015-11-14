@@ -1,0 +1,25 @@
+{
+    "id": "12345678901234567890abcd",
+    "body": "example message",
+    "html_body": "<div>example message</div>",
+    "name": "example user1",
+    "screen_name": "user1",
+    "profile_image_url": "https://developer.apple.com/swift/images/swift-touch-icon.png",
+    "created_at": "2015-07-20 11:59:59 +0900",
+    "room": {
+        "id": "12345678901234567890abcd",
+        "name": "example room",
+        "nickname":"example",
+        "updated_at": "2015-07-20 11:59:59 +0900",
+        "user": {
+            "id":"12345678901234567890abc1",
+            "name": "example user1",
+            "screen_name": "user1",
+            "profile_image_url": "https://developer.apple.com/swift/images/swift-touch-icon.png",
+            "user_profiles": []
+        },
+        "members": []
+    },
+    "attachment": [],
+    "view": "<div class='message' message-id='12345678901234567890abcd'>\n<div>\n<div class='profile'>\n<img alt='user1' class='profile' src='https://developer.apple.com/swift/images/swift-touch-icon.png' title='user1'>\n<span class='screen-name'>user1</span>\n<span class='user-name'>example user1</span>\n</div>\n<div class='update-time'>\n<a href='/message?id=12345678901234567890abcd'>2015-07-20 11:59 AM</a>\n</div>\n<div class='edit-icons'>\n<span class='own-message' style='display:none'>\n<img alt=\"Edit this message\" class=\"icon edit\" src=\"/assets/message_edit-e8c5d847d32d9b2ca8392b6ebdcd8d6e.png\" title=\"Edit this message\" />\n<img alt=\"Delete this message\" class=\"icon delete\" src=\"/assets/message_delete-74579819b8f29ef9e95502801f0f42f7.png\" title=\"Delete this message\" />\n</span>\n</div>\n<div class='body' id='12345678901234567890abcd' original='example message'>\nexample message\n\n</div>\n</div>\n</div>\n"
+}

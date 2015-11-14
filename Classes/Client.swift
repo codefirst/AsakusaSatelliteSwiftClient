@@ -30,7 +30,7 @@ public class Client {
     }
     
     private func removeCookies() {
-        AsakusaSatellite.removeCookies(rootURL: NSURL(string: rootURL)!)
+        AsakusaSatellite.removeCookiesForURL(NSURL(string: rootURL)!)
     }
     
     // MARK: - public APIs
@@ -62,12 +62,12 @@ public class Client {
         serviceInfo { response in
             switch response {
             case .Success(let serviceInfo):
-                if let engine = MessagePusherClient.Engine(messagePusher: serviceInfo.value.messagePusher) {
+                if let engine = MessagePusherClient.Engine(messagePusher: serviceInfo.messagePusher) {
                     completion(MessagePusherClient(engine: engine, roomID: roomID))
                 } else {
                     completion(nil)
                 }
-            case .Failure(let error):
+            case .Failure(_):
                 completion(nil)
             }
         }
@@ -75,22 +75,23 @@ public class Client {
     
     // MARK: -
     
-    private func request<T: ResponseItem>(endpoint: Endpoint, requestModifier: (Request -> Request) = {$0}, completion: Response<T> -> Void) {
-        requestModifier(Alamofire.request(endpoint.URLRequest(apiBaseURL, apiKey: apiKey))).responseJSON { (request, response, object, error) -> Void in
-            if object == nil || error != nil {
-                NSLog("failure in Client.request(\(endpoint)): \(error)")
-                completion(.Failure(error))
-            } else {
-                self.completeWithResponse(response, object!, error, completion: completion)
+    private func request<T: APIModel>(endpoint: Endpoint, requestModifier: (Request -> Request) = {$0}, completion: Response<T> -> Void) {
+        requestModifier(Alamofire.request(endpoint.URLRequest(apiBaseURL, apiKey: apiKey))).responseJSON { (request, response, result) -> Void in
+            switch result {
+            case .Success(let value):
+                self.completeWithResponse(response, endpoint.modifyJSON(JSON(value)), nil, completion: completion)
+            case .Failure(_, let error):
+                NSLog("%@", "failure in Client.request(\(endpoint)): \(error)")
+                completion(.Failure(error as NSError))
             }
         }
     }
     
-    private func completeWithResponse<T: ResponseItem>(response: NSHTTPURLResponse?, _ jsonObject: AnyObject, _ error: NSError?, completion: Response<T> -> Void) {
-        if let responseItem = T(SwiftyJSON.JSON(jsonObject)) {
-            completion(Response.Success(Box(responseItem)))
+    private func completeWithResponse<T: APIModel>(response: NSHTTPURLResponse?, _ json: JSON, _ error: NSError?, completion: Response<T> -> Void) {
+        if let responseItem = T(json: json) {
+            completion(Response.Success(responseItem))
         } else {
-            NSLog("failure in completeWithResponse")
+            NSLog("%@", "failure in completeWithResponse")
             completion(.Failure(error))
         }
     }
@@ -98,15 +99,8 @@ public class Client {
 
 
 public enum Response<T> {
-    case Success(Box<T>)
+    case Success(T)
     case Failure(NSError?)
-}
-
-public class Box<T> {
-    public let value: T
-    public init(_ value: T) {
-        self.value = value
-    }
 }
 
 
@@ -116,9 +110,9 @@ public enum SortOrder: String {
 }
 
 
-internal func removeCookies(#rootURL: NSURL) {
+internal func removeCookiesForURL(URL: NSURL) {
     let cs = NSHTTPCookieStorage.sharedHTTPCookieStorage()
-    for cookie in (cs.cookiesForURL(rootURL) as? [NSHTTPCookie]) ?? [] {
+    for cookie in cs.cookiesForURL(URL) ?? [] {
         cs.deleteCookie(cookie)
     }
 }

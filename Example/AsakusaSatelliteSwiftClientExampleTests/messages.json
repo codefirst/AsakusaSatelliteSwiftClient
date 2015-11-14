@@ -1,0 +1,19 @@
+[{
+    "id": "message1",
+    "body": "example message1",
+    "html_body": "<div>example message1</div>",
+    "name": "example user1",
+    "screen_name": "user1",
+    "profile_image_url": "https://developer.apple.com/swift/images/swift-touch-icon.png",
+    "created_at": "2015-07-20 11:59:59 +0900",
+    "attachment": [],
+ },{
+    "id": "message2",
+    "body": "example message2",
+    "html_body": "<div>example message2</div>",
+    "name": "example user1",
+    "screen_name": "user1",
+    "profile_image_url": "https://developer.apple.com/swift/images/swift-touch-icon.png",
+    "created_at": "2015-07-21 11:59:59 +0900",
+    "attachment": [],
+ }]

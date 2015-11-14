@@ -20,15 +20,15 @@ class ViewController: UIViewController, UITextFieldDelegate, UITextViewDelegate 
     let usernameLabel = UILabel()
     let roomIDToPostField = UITextField()
     let messageToPostField = UITextField()
-    let postButton = UIButton.buttonWithType(.System) as! UIButton
-    let listButton = UIButton.buttonWithType(.System) as! UIButton
+    let postButton = UIButton(type: .System)
+    let listButton = UIButton(type: .System)
     let messagesTextView = UITextView()
     var pusher: MessagePusherClient?
     
     override func loadView() {
         super.loadView()
         
-        edgesForExtendedLayout = nil
+        edgesForExtendedLayout = .None
         
         view.backgroundColor = UIColor.whiteColor()
         
@@ -59,18 +59,18 @@ class ViewController: UIViewController, UITextFieldDelegate, UITextViewDelegate 
         ]
         let metrics = ["p": 8]
         for v in views.values {
-            v.setTranslatesAutoresizingMaskIntoConstraints(false)
+            v.translatesAutoresizingMaskIntoConstraints = false
             view.addSubview(v)
         }
-        view.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("H:|-p-[apiKey]-p-|", options: nil, metrics: metrics, views: views))
-        view.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("H:|-p-[name]-p-|", options: nil, metrics: metrics, views: views))
-        view.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("H:|-p-[roomID]-p-|", options: nil, metrics: metrics, views: views))
-        view.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("H:|-p-[message]-p-|", options: nil, metrics: metrics, views: views))
-        view.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("H:|-p-[listButton]", options: nil, metrics: metrics, views: views))
-        view.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("H:[post]-p-|", options: nil, metrics: metrics, views: views))
-        view.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("H:|[messages]|", options: nil, metrics: metrics, views: views))
-        view.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("V:|-p-[apiKey]-p-[name]-20-[roomID]-[message]-[post]-[messages]|", options: nil, metrics: metrics, views: views))
-        view.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("V:[message]-[listButton]", options: nil, metrics: metrics, views: views))
+        view.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("H:|-p-[apiKey]-p-|", options: [], metrics: metrics, views: views))
+        view.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("H:|-p-[name]-p-|", options: [], metrics: metrics, views: views))
+        view.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("H:|-p-[roomID]-p-|", options: [], metrics: metrics, views: views))
+        view.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("H:|-p-[message]-p-|", options: [], metrics: metrics, views: views))
+        view.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("H:|-p-[listButton]", options: [], metrics: metrics, views: views))
+        view.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("H:[post]-p-|", options: [], metrics: metrics, views: views))
+        view.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("H:|[messages]|", options: [], metrics: metrics, views: views))
+        view.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("V:|-p-[apiKey]-p-[name]-20-[roomID]-[message]-[post]-[messages]|", options: [], metrics: metrics, views: views))
+        view.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("V:[message]-[listButton]", options: [], metrics: metrics, views: views))
     }
     
     override func viewDidLoad() {
@@ -91,7 +91,7 @@ class ViewController: UIViewController, UITextFieldDelegate, UITextViewDelegate 
         client.user() { response in
             switch response {
             case .Success(let user):
-                self.usernameLabel.text = "logged in as \(user.value.name)"
+                self.usernameLabel.text = "logged in as \(user.name)"
             case .Failure(let error):
                 self.usernameLabel.text = "cannot log in: \(error)"
             }
@@ -100,14 +100,14 @@ class ViewController: UIViewController, UITextFieldDelegate, UITextViewDelegate 
         client.roomList { response in
             switch response {
             case .Success(let many):
-                let rooms = many.value.items
+                let rooms = many.items
                 NSLog("rooms: " + rooms.map{"\($0.name)(\($0.id))"}.description)
             case .Failure(let error):
                 NSLog("failed to list rooms: \(error)")
             }
         }
         
-        client.messagePusher(roomIDToPostField.text) { mpc in
+        client.messagePusher(roomIDToPostField.text ?? "") { mpc in
             NSLog("pusher: \(mpc)")
             
             self.pusher = mpc
@@ -122,10 +122,10 @@ class ViewController: UIViewController, UITextFieldDelegate, UITextViewDelegate 
     }
     
     func post(sender: AnyObject?) {
-        client.postMessage(messageToPostField.text, roomID: roomIDToPostField.text, files: []) { response in
+        client.postMessage(messageToPostField.text ?? "", roomID: roomIDToPostField.text ?? "", files: []) { response in
             switch response {
             case .Success(let postMessage):
-                NSLog("message posted successfully: \(postMessage.value.messageID)")
+                NSLog("message posted successfully: \(postMessage.messageID)")
                 self.messageToPostField.text = ""
             case .Failure(let error):
                 NSLog("failed to post message: \(error)")
@@ -134,12 +134,12 @@ class ViewController: UIViewController, UITextFieldDelegate, UITextViewDelegate 
     }
     
     func list(sender: AnyObject?) {
-        client.messageList(roomIDToPostField.text, count: 20, sinceID: nil, untilID: nil, order: .Desc) { response in
+        client.messageList(roomIDToPostField.text ?? "", count: 20, sinceID: nil, untilID: nil, order: .Desc) { response in
             switch response {
             case .Success(let many):
-                let messages = many.value.items
+                let messages = many.items
                 // NSLog("messages (\(messages.count)): \(messages)")
-                self.messagesTextView.text = "\n".join(messages.map{"\($0.name): \($0.body)"})
+                self.messagesTextView.text = messages.map{"\($0.name): \($0.body)"}.joinWithSeparator("\n")
             case .Failure(let error):
                 NSLog("failed to list messages: \(error)")
             }

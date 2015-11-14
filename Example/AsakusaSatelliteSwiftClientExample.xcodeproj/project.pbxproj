@@ -7,13 +7,15 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		6E03A3223AD96CC55F8EF0B1 /* Pods.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 15FC971CE7671698F92EDF0A /* Pods.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
-		CECA3AE063069D464AC4FA13 /* Pods.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 15FC971CE7671698F92EDF0A /* Pods.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
+		516A534F0071FDCB1989782E /* Pods_AsakusaSatelliteSwiftClientExampleTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FBF4EECD3DFCD570AC26A43C /* Pods_AsakusaSatelliteSwiftClientExampleTests.framework */; };
+		6E03A3223AD96CC55F8EF0B1 /* Pods.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 15FC971CE7671698F92EDF0A /* Pods.framework */; };
+		EA5BCA7D1B5CAC0C00F52F8D /* messages.json in Resources */ = {isa = PBXBuildFile; fileRef = EA5BCA7B1B5CAA2300F52F8D /* messages.json */; };
+		EAAC354F1B5C9516002FEE0C /* MessageSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAAC354E1B5C9516002FEE0C /* MessageSpec.swift */; };
+		EAAC35511B5C95A9002FEE0C /* message.json in Resources */ = {isa = PBXBuildFile; fileRef = EAAC35501B5C95A9002FEE0C /* message.json */; };
 		EACFD2B61AA2B24C007B868A /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = EACFD2B51AA2B24C007B868A /* AppDelegate.swift */; };
 		EACFD2B81AA2B24C007B868A /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EACFD2B71AA2B24C007B868A /* ViewController.swift */; };
 		EACFD2BD1AA2B24C007B868A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = EACFD2BC1AA2B24C007B868A /* Images.xcassets */; };
 		EACFD2C01AA2B24C007B868A /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = EACFD2BE1AA2B24C007B868A /* LaunchScreen.xib */; };
-		EACFD2CC1AA2B24C007B868A /* AsakusaSatelliteSwiftClientExampleTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = EACFD2CB1AA2B24C007B868A /* AsakusaSatelliteSwiftClientExampleTests.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -28,7 +30,11 @@
 
 /* Begin PBXFileReference section */
 		15FC971CE7671698F92EDF0A /* Pods.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		A0944166D14D95B8825AE34C /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
+		935A45A83B7280E29CDD6A11 /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
+		DA8F3718884EA3638F6FCEC5 /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
+		EA5BCA7B1B5CAA2300F52F8D /* messages.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = messages.json; sourceTree = "<group>"; };
+		EAAC354E1B5C9516002FEE0C /* MessageSpec.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MessageSpec.swift; sourceTree = "<group>"; };
+		EAAC35501B5C95A9002FEE0C /* message.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = message.json; sourceTree = "<group>"; };
 		EACD53DF1ABAF23A0071FC5A /* AsakusaSatellite.playground */ = {isa = PBXFileReference; lastKnownFileType = file.playground; path = AsakusaSatellite.playground; sourceTree = "<group>"; };
 		EACFD2B01AA2B24C007B868A /* AsakusaSatelliteSwiftClientExample.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = AsakusaSatelliteSwiftClientExample.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		EACFD2B41AA2B24C007B868A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -38,8 +44,9 @@
 		EACFD2BF1AA2B24C007B868A /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/LaunchScreen.xib; sourceTree = "<group>"; };
 		EACFD2C51AA2B24C007B868A /* AsakusaSatelliteSwiftClientExampleTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = AsakusaSatelliteSwiftClientExampleTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		EACFD2CA1AA2B24C007B868A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		EACFD2CB1AA2B24C007B868A /* AsakusaSatelliteSwiftClientExampleTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AsakusaSatelliteSwiftClientExampleTests.swift; sourceTree = "<group>"; };
-		F5064C4CCCD00C2A1E51B39C /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
+		EAE1AA531B5C917D002E9D25 /* Pods-AsakusaSatelliteSwiftClientExampleTests.debug.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; name = "Pods-AsakusaSatelliteSwiftClientExampleTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-AsakusaSatelliteSwiftClientExampleTests/Pods-AsakusaSatelliteSwiftClientExampleTests.debug.xcconfig"; sourceTree = "<group>"; };
+		EAE1AA541B5C917D002E9D25 /* Pods-AsakusaSatelliteSwiftClientExampleTests.release.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; name = "Pods-AsakusaSatelliteSwiftClientExampleTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-AsakusaSatelliteSwiftClientExampleTests/Pods-AsakusaSatelliteSwiftClientExampleTests.release.xcconfig"; sourceTree = "<group>"; };
+		FBF4EECD3DFCD570AC26A43C /* Pods_AsakusaSatelliteSwiftClientExampleTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_AsakusaSatelliteSwiftClientExampleTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -55,28 +62,31 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				CECA3AE063069D464AC4FA13 /* Pods.framework in Frameworks */,
+				516A534F0071FDCB1989782E /* Pods_AsakusaSatelliteSwiftClientExampleTests.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		5B32F2E31C1D48E1C2B581EB /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				DA8F3718884EA3638F6FCEC5 /* Pods.debug.xcconfig */,
+				935A45A83B7280E29CDD6A11 /* Pods.release.xcconfig */,
+				EAE1AA531B5C917D002E9D25 /* Pods-AsakusaSatelliteSwiftClientExampleTests.debug.xcconfig */,
+				EAE1AA541B5C917D002E9D25 /* Pods-AsakusaSatelliteSwiftClientExampleTests.release.xcconfig */,
+			);
+			name = Pods;
+			sourceTree = "<group>";
+		};
 		607234655832E9E1EB2CFC3E /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
 				15FC971CE7671698F92EDF0A /* Pods.framework */,
+				FBF4EECD3DFCD570AC26A43C /* Pods_AsakusaSatelliteSwiftClientExampleTests.framework */,
 			);
 			name = Frameworks;
-			sourceTree = "<group>";
-		};
-		65954C0592535C515AF4E423 /* Pods */ = {
-			isa = PBXGroup;
-			children = (
-				A0944166D14D95B8825AE34C /* Pods.debug.xcconfig */,
-				F5064C4CCCD00C2A1E51B39C /* Pods.release.xcconfig */,
-			);
-			name = Pods;
 			sourceTree = "<group>";
 		};
 		EACFD2A71AA2B24C007B868A = {
@@ -86,8 +96,8 @@
 				EACFD2B21AA2B24C007B868A /* ExampleApp */,
 				EACFD2C81AA2B24C007B868A /* ExampleTests */,
 				EACFD2B11AA2B24C007B868A /* Products */,
-				65954C0592535C515AF4E423 /* Pods */,
 				607234655832E9E1EB2CFC3E /* Frameworks */,
+				5B32F2E31C1D48E1C2B581EB /* Pods */,
 			);
 			sourceTree = "<group>";
 		};
@@ -124,7 +134,9 @@
 		EACFD2C81AA2B24C007B868A /* ExampleTests */ = {
 			isa = PBXGroup;
 			children = (
-				EACFD2CB1AA2B24C007B868A /* AsakusaSatelliteSwiftClientExampleTests.swift */,
+				EAAC354E1B5C9516002FEE0C /* MessageSpec.swift */,
+				EAAC35501B5C95A9002FEE0C /* message.json */,
+				EA5BCA7B1B5CAA2300F52F8D /* messages.json */,
 				EACFD2C91AA2B24C007B868A /* Supporting Files */,
 			);
 			name = ExampleTests;
@@ -189,7 +201,9 @@
 		EACFD2A81AA2B24C007B868A /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0610;
+				LastSwiftMigration = 0700;
+				LastSwiftUpdateCheck = 0700;
+				LastUpgradeCheck = 0700;
 				ORGANIZATIONNAME = codefirst;
 				TargetAttributes = {
 					EACFD2AF1AA2B24C007B868A = {
@@ -197,7 +211,6 @@
 					};
 					EACFD2C41AA2B24C007B868A = {
 						CreatedOnToolsVersion = 6.1.1;
-						TestTargetID = EACFD2AF1AA2B24C007B868A;
 					};
 				};
 			};
@@ -234,6 +247,8 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				EAAC35511B5C95A9002FEE0C /* message.json in Resources */,
+				EA5BCA7D1B5CAC0C00F52F8D /* messages.json in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -252,7 +267,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods/Pods-resources.sh\"\n";
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-AsakusaSatelliteSwiftClientExampleTests/Pods-AsakusaSatelliteSwiftClientExampleTests-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		36E42EAD9A42F04097D23619 /* Check Pods Manifest.lock */ = {
@@ -282,7 +297,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods/Pods-frameworks.sh\"\n";
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-AsakusaSatelliteSwiftClientExampleTests/Pods-AsakusaSatelliteSwiftClientExampleTests-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		56226F780DF9102C9A327937 /* Check Pods Manifest.lock */ = {
@@ -346,7 +361,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				EACFD2CC1AA2B24C007B868A /* AsakusaSatelliteSwiftClientExampleTests.swift in Sources */,
+				EAAC354F1B5C9516002FEE0C /* MessageSpec.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -391,7 +406,9 @@
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
+				ENABLE_BITCODE = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_OPTIMIZATION_LEVEL = 0;
@@ -434,6 +451,7 @@
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = YES;
+				ENABLE_BITCODE = NO;
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
@@ -453,59 +471,51 @@
 		};
 		EACFD2D01AA2B24C007B868A /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = A0944166D14D95B8825AE34C /* Pods.debug.xcconfig */;
+			baseConfigurationReference = DA8F3718884EA3638F6FCEC5 /* Pods.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				INFOPLIST_FILE = AsakusaSatelliteSwiftClientExample/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "org.codefirst.example.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Debug;
 		};
 		EACFD2D11AA2B24C007B868A /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = F5064C4CCCD00C2A1E51B39C /* Pods.release.xcconfig */;
+			baseConfigurationReference = 935A45A83B7280E29CDD6A11 /* Pods.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				INFOPLIST_FILE = AsakusaSatelliteSwiftClientExample/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "org.codefirst.example.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Release;
 		};
 		EACFD2D31AA2B24C007B868A /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = A0944166D14D95B8825AE34C /* Pods.debug.xcconfig */;
+			baseConfigurationReference = EAE1AA531B5C917D002E9D25 /* Pods-AsakusaSatelliteSwiftClientExampleTests.debug.xcconfig */;
 			buildSettings = {
-				BUNDLE_LOADER = "$(TEST_HOST)";
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(SDKROOT)/Developer/Library/Frameworks",
-					"$(inherited)",
-				);
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"DEBUG=1",
 					"$(inherited)",
 				);
 				INFOPLIST_FILE = AsakusaSatelliteSwiftClientExampleTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "org.codefirst.example.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/AsakusaSatelliteSwiftClientExample.app/AsakusaSatelliteSwiftClientExample";
 			};
 			name = Debug;
 		};
 		EACFD2D41AA2B24C007B868A /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = F5064C4CCCD00C2A1E51B39C /* Pods.release.xcconfig */;
+			baseConfigurationReference = EAE1AA541B5C917D002E9D25 /* Pods-AsakusaSatelliteSwiftClientExampleTests.release.xcconfig */;
 			buildSettings = {
-				BUNDLE_LOADER = "$(TEST_HOST)";
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(SDKROOT)/Developer/Library/Frameworks",
-					"$(inherited)",
-				);
 				INFOPLIST_FILE = AsakusaSatelliteSwiftClientExampleTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "org.codefirst.example.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/AsakusaSatelliteSwiftClientExample.app/AsakusaSatelliteSwiftClientExample";
 			};
 			name = Release;
 		};
