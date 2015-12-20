@@ -26,13 +26,11 @@ public class MessagePusherClient: CustomStringConvertible {
         public init?(messagePusher: ServiceInfo.MessagePusher) {
             switch messagePusher.name {
             case .Some("asakusasatellite::messagepusher::keima"):
-                if messagePusher.url == nil || messagePusher.key == nil { return nil }
-                self = Keima(url: messagePusher.url!, key: messagePusher.key!)
+                guard let url = messagePusher.url, let key = messagePusher.key else { return nil }
+                self = Keima(url: url, key: key)
             default:
                 return nil
             }
-            
-            self = Keima(url: messagePusher.url!, key: messagePusher.key!)
         }
         
         var url: String {
