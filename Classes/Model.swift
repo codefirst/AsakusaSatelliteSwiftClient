@@ -16,12 +16,12 @@ public protocol APIModel {
 }
 
 extension APIModel {
-    var jsonString: String? { return json.rawString(NSUTF8StringEncoding, options: .PrettyPrinted) }
+    var jsonString: String? { return json.rawString(.utf8, options: .prettyPrinted) }
     
-    public func saveToFile(path: String) -> Bool {
+    public func saveToFile(_ path: String) -> Bool {
         do {
             guard let s = jsonString else { return false }
-            try s.writeToFile(path, atomically: true, encoding: NSUTF8StringEncoding)
+            try s.write(toFile: path, atomically: true, encoding: .utf8)
             return true
         } catch _ {
             return false
@@ -29,7 +29,7 @@ extension APIModel {
     }
     
     public init?(file path: String) {
-        if let json = (NSData(contentsOfFile: path).map{SwiftyJSON.JSON(data: $0, options: .AllowFragments, error: nil)}) {
+        if let json = try? SwiftyJSON.JSON(data: Data(contentsOf: URL(fileURLWithPath: path)), options: .allowFragments) {
             self.init(json: json)
         } else {
             return nil
@@ -118,9 +118,9 @@ public struct User: APIModel {
     public init?(json: JSON) {
         self.json = json
         guard let id = json["id"].string,
-            name = json["name"].string,
-            screenName = json["screen_name"].string,
-            profileImageURL = json["profile_image_url"].string else { return nil }
+            let name = json["name"].string,
+            let screenName = json["screen_name"].string,
+            let profileImageURL = json["profile_image_url"].string else { return nil }
         
         self.id = id
         self.name = name
@@ -144,7 +144,7 @@ public struct Room: APIModel {
     public init?(json: JSON) {
         self.json = json
         guard let id = json["id"].string,
-            name = json["name"].string else { return nil }
+            let name = json["name"].string else { return nil }
         
         self.id = id
         self.name = name
@@ -169,8 +169,8 @@ public struct PostMessage: APIModel {
 }
 
 
-private let dateFormatter: NSDateFormatter = {
-    let df = NSDateFormatter()
+private let dateFormatter: DateFormatter = {
+    let df = DateFormatter()
     df.dateFormat = "yyyy-MM-dd HH:mm:SSZZZZ"
     return df
     }()
@@ -185,7 +185,7 @@ public struct Message: APIModel, CustomStringConvertible {
     public let screenName: String
     public let body: String
     public let htmlBody: String
-    public let createdAt: NSDate
+    public let createdAt: Date
     public let profileImageURL: String
     public let attachments: [Attachment]
     public var imageAttachments: [Attachment] { return attachments.filter{$0.contentType.hasPrefix("image/")} }
@@ -194,12 +194,12 @@ public struct Message: APIModel, CustomStringConvertible {
         self.json = json
         
         guard let id = json["id"].string,
-            name = json["name"].string,
-            screenName = json["screen_name"].string,
-            body = json["body"].string,
-            htmlBody = json["html_body"].string,
-            profileImageURL = json["profile_image_url"].string,
-            createdAt = json["created_at"].string.flatMap({dateFormatter.dateFromString($0)}) else { return nil }
+            let name = json["name"].string,
+            let screenName = json["screen_name"].string,
+            let body = json["body"].string,
+            let htmlBody = json["html_body"].string,
+            let profileImageURL = json["profile_image_url"].string,
+            let createdAt = json["created_at"].string.flatMap({dateFormatter.date(from: $0)}) else { return nil }
         
         self.id = id
         self.prevID = json["prev_id"].string
@@ -229,8 +229,8 @@ public struct Attachment: APIModel, CustomStringConvertible {
         self.json = json
         
         guard let url = json["url"].string,
-            filename = json["filename"].string,
-            contentType = json["content_type"].string else { return nil }
+            let filename = json["filename"].string,
+            let contentType = json["content_type"].string else { return nil }
         
         self.url = url
         self.filename = filename
@@ -243,7 +243,7 @@ public struct Attachment: APIModel, CustomStringConvertible {
 }
 
 
-private func compact<T>(array: [T?]) -> [T] {
+private func compact<T>(_ array: [T?]) -> [T] {
     return array.reduce([]){ a, b in b.map{a + [$0]} ?? a}
 }
 

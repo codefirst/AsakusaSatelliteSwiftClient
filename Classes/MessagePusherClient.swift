@@ -7,35 +7,35 @@
 //
 
 import Foundation
-import Socket_IO_Client_Swift
+import SocketIO
 import SwiftyJSON
 
 
-public class MessagePusherClient: CustomStringConvertible {
+open class MessagePusherClient: CustomStringConvertible {
     let engine: Engine
     let roomID: String
     let socket: SocketIOClient
     
     // callbacks
-    public var onMessageCreate: (Message -> Void)?
+    open var onMessageCreate: ((Message) -> Void)?
     
     
     public enum Engine: CustomStringConvertible {
-        case Keima(url: String, key: String)
+        case keima(url: URL, key: String)
         
         public init?(messagePusher: ServiceInfo.MessagePusher) {
             switch messagePusher.name {
-            case .Some("asakusasatellite::messagepusher::keima"):
-                guard let url = messagePusher.url, let key = messagePusher.key else { return nil }
-                self = Keima(url: url, key: key)
+            case .some("asakusasatellite::messagepusher::keima"):
+                guard let urlString = messagePusher.url, let url = URL(string: urlString), let key = messagePusher.key else { return nil }
+                self = .keima(url: url, key: key)
             default:
                 return nil
             }
         }
         
-        var url: String {
+        var url: URL {
             switch self {
-            case .Keima(let url, _): return url
+            case .keima(let url, _): return url
             }
         }
         
@@ -48,29 +48,29 @@ public class MessagePusherClient: CustomStringConvertible {
     public init(engine: Engine, roomID: String) {
         self.engine = engine
         self.roomID = roomID
-        let connectParams: [String: AnyObject] = {
+        let connectParams: [String: Any] = {
             switch engine {
-            case .Keima(_, let key): return ["app": key]
+            case .keima(_, let key): return ["app": key]
             }
             }()
-        self.socket = SocketIOClient(socketURL: engine.url, opts: ["connectParams": connectParams])
+        self.socket = SocketIOClient(socketURL: engine.url, config: [SocketIOClientOption.connectParams(connectParams)])
         self.socket.on("connect") { data, ack in
             // NSLog("%@", "\(self): on connect")
-            ack?.with([])
+            ack.with([])
             self.subscribe()
         }
         self.socket.on("message_create") { data, ack in
             // NSLog("%@", "\(self): on message_create")
-            ack?.with([])
+            ack.with([])
             
             // args matches Pusher interface and thus: [0] => ID?, [1] => app content json
             if let args = data as? [String] {
                 if args.count < 2 { NSLog("%@", "\(self) unexpected message_create args: \(data)"); return }
                 
                 do {
-                    let contentJsonObject = try NSJSONSerialization.JSONObjectWithData(
-                        args[1].dataUsingEncoding(NSUTF8StringEncoding, allowLossyConversion: true) ?? NSData(),
-                        options: .AllowFragments)
+                    let contentJsonObject = try JSONSerialization.jsonObject(
+                        with: args[1].data(using: .utf8, allowLossyConversion: true) ?? Data(),
+                        options: .allowFragments)
                     let contentJson = SwiftyJSON.JSON(contentJsonObject)["content"]
                     
                     if let message = Message(json: contentJson) {
@@ -86,16 +86,16 @@ public class MessagePusherClient: CustomStringConvertible {
     }
     
     
-    public var description: String {
+    open var description: String {
         return "MessagePusherClient(\(engine), roomID: \(roomID))"
     }
     
     
-    public func connect() {
+    open func connect() {
         socket.connect()
     }
     
-    public func subscribe() {
+    open func subscribe() {
         socket.emit("subscribe", "as-\(roomID)")
     }
 }

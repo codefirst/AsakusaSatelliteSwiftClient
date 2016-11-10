@@ -1,15 +1,15 @@
 PODS:
-  - Alamofire (2.0.2)
-  - AsakusaSatellite (0.4.0):
-    - Alamofire (~> 2.0)
-    - Socket.IO-Client-Swift (~> 3.1)
-    - SwiftyJSON (~> 2.2)
-    - UTIKit (~> 1.2)
-  - Nimble (3.0.0)
-  - Quick (0.8.0)
-  - Socket.IO-Client-Swift (3.1.6)
-  - SwiftyJSON (2.3.2)
-  - UTIKit (1.2.0)
+  - Alamofire (4.0.1)
+  - AsakusaSatellite (0.5.0):
+    - Alamofire (~> 4.0)
+    - Socket.IO-Client-Swift (~> 8.0)
+    - SwiftyJSON (~> 3.1)
+    - UTIKit (~> 2.0)
+  - Nimble (5.1.1)
+  - Quick (0.10.0)
+  - Socket.IO-Client-Swift (8.1.1)
+  - SwiftyJSON (3.1.1)
+  - UTIKit (2.0.0)
 
 DEPENDENCIES:
   - AsakusaSatellite (from `../`)
@@ -21,12 +21,14 @@ EXTERNAL SOURCES:
     :path: "../"
 
 SPEC CHECKSUMS:
-  Alamofire: 8edbab00802a752bb5240cc2abe70e7e881488ad
-  AsakusaSatellite: a326d151f7f88ca9ffaa63d6e893a46c1c06a6d2
-  Nimble: 4c353d43735b38b545cbb4cb91504588eb5de926
-  Quick: 563d0f6ec5f72e394645adb377708639b7dd38ab
-  Socket.IO-Client-Swift: f80e4eec9f067ced71fbcdbfa55bf59ff0248e53
-  SwiftyJSON: 04ccea08915aa0109039157c7974cf0298da292a
-  UTIKit: ed13be6bc14a625b1f41e24a3bcc6737ee19ff70
+  Alamofire: 7682d43245de14874acd142ec137b144aa1dd335
+  AsakusaSatellite: 673b103cd3188a743e748b91d86e3b0b3f202474
+  Nimble: 415e3aa3267e7bc2c96b05fa814ddea7bb686a29
+  Quick: 5d290df1c69d5ee2f0729956dcf0fd9a30447eaa
+  Socket.IO-Client-Swift: 5c18fa2af9df8a19d20e4df815141103c1f7079b
+  SwiftyJSON: f0be2e604f83e8405a624e9f891898bf6ed4e019
+  UTIKit: 64898406d417db64495ad4677c89e08eff564d5b
 
-COCOAPODS: 0.39.0
+PODFILE CHECKSUM: 1ebbc59924305bb35ca37e96bd86d3c9983b754f
+
+COCOAPODS: 1.1.1

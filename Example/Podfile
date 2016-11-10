@@ -1,11 +1,13 @@
-platform :ios, '8.0'
+platform :ios, '9.0'
 use_frameworks!
 
-link_with 'AsakusaSatelliteSwiftClientExample'
 
-pod 'AsakusaSatellite', :path => '../'
+target 'AsakusaSatelliteSwiftClientExample' do
+  pod 'AsakusaSatellite', :path => '../'
 
-target 'AsakusaSatelliteSwiftClientExampleTests' do
+  target 'AsakusaSatelliteSwiftClientExampleTests' do
+    inherit! :search_paths
     pod 'Quick'
     pod 'Nimble'
+  end
 end

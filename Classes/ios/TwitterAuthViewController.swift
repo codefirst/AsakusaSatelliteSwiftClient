@@ -10,16 +10,16 @@ import Foundation
 import UIKit
 
 
-public class TwitterAuthViewController: UIViewController, UIWebViewDelegate {
-    let webview = UIWebView(frame: CGRectZero)
-    let rootURL: NSURL
-    var authTwitterURL: NSURL { return NSURL(string: "auth/twitter", relativeToURL: rootURL)! }
-    var accountURL: NSURL { return NSURL(string: "account", relativeToURL: rootURL)! }
-    let completion: (String? -> Void)
+open class TwitterAuthViewController: UIViewController, UIWebViewDelegate {
+    let webview = UIWebView(frame: .zero)
+    let rootURL: URL
+    var authTwitterURL: URL { return URL(string: "auth/twitter", relativeTo: rootURL)! }
+    var accountURL: URL { return URL(string: "account", relativeTo: rootURL)! }
+    let completion: ((String?) -> Void)
     
     // MARK: init
 
-    public init(rootURL: NSURL, completion: (String? -> Void)) {
+    public init(rootURL: URL, completion: @escaping ((String?) -> Void)) {
         self.rootURL = rootURL
         self.completion = completion
         super.init(nibName: nil, bundle: nil)
@@ -31,30 +31,30 @@ public class TwitterAuthViewController: UIViewController, UIWebViewDelegate {
     
     // MARK: -
     
-    public override func viewDidLoad() {
+    open override func viewDidLoad() {
         title = NSLocalizedString("Sign in with Twitter", comment: "")
         
-        webview.autoresizingMask = [.FlexibleWidth, .FlexibleHeight]
+        webview.autoresizingMask = [.flexibleWidth, .flexibleHeight]
         webview.frame = view.bounds
         webview.delegate = self
         view.addSubview(webview)
         
-        removeCookiesForURL(NSURL(string: "https://twitter.com")!)
+        removeCookiesForURL(URL(string: "https://twitter.com")!)
         
         // load /auth/twitter with referer /account
         // oauth callback redirects to referer
-        let request = NSMutableURLRequest(URL: authTwitterURL)
+        var request = URLRequest(url: authTwitterURL)
         request.setValue(accountURL.absoluteString, forHTTPHeaderField: "Referer")
         webview.loadRequest(request)
     }
     
     // MARK: UIWebViewDelegate
     
-    private func isRedirectedBackToAsakusaSatellite(request: NSURLRequest) -> Bool {
-        return request.URL?.absoluteString == accountURL.absoluteString
+    private func isRedirectedBackToAsakusaSatellite(_ request: URLRequest) -> Bool {
+        return request.url?.absoluteString == accountURL.absoluteString
     }
     
-    public func webView(webView: UIWebView, shouldStartLoadWithRequest request: NSURLRequest, navigationType: UIWebViewNavigationType) -> Bool {
+    open func webView(_ webView: UIWebView, shouldStartLoadWith request: URLRequest, navigationType: UIWebViewNavigationType) -> Bool {
         if isRedirectedBackToAsakusaSatellite(request) {
             // TODO: display HUD
             NSLog("%@", "Getting API Key...")
@@ -62,12 +62,12 @@ public class TwitterAuthViewController: UIViewController, UIWebViewDelegate {
         return true
     }
     
-    public func webViewDidStartLoad(webView: UIWebView) {
-        UIApplication.sharedApplication().networkActivityIndicatorVisible = true
+    open func webViewDidStartLoad(_ webView: UIWebView) {
+        UIApplication.shared.isNetworkActivityIndicatorVisible = true
     }
     
-    public func webViewDidFinishLoad(webView: UIWebView) {
-        UIApplication.sharedApplication().networkActivityIndicatorVisible = false
+    open func webViewDidFinishLoad(_ webView: UIWebView) {
+        UIApplication.shared.isNetworkActivityIndicatorVisible = false
         
         if isRedirectedBackToAsakusaSatellite(webview.request!) {
             // did load /account on AsakusaSatellite
@@ -76,25 +76,25 @@ public class TwitterAuthViewController: UIViewController, UIWebViewDelegate {
             
             // get apiKey from text field
             let js = "$('#account_secret_key').attr('value')"
-            let apiKey = webview.stringByEvaluatingJavaScriptFromString(js)
+            let apiKey = webview.stringByEvaluatingJavaScript(from: js)
             
             webView.delegate = nil // unlink delegate before removing self
-            navigationController?.popViewControllerAnimated(true)
+            _ = navigationController?.popViewController(animated: true)
             completion((apiKey?.isEmpty ?? true) ? nil : apiKey)
         }
     }
     
-    public func webView(webView: UIWebView, didFailLoadWithError error: NSError?) {
-        UIApplication.sharedApplication().networkActivityIndicatorVisible = false
+    open func webView(_ webView: UIWebView, didFailLoadWithError error: Error) {
+        UIApplication.shared.isNetworkActivityIndicatorVisible = false
         
         let ac = UIAlertController(
             title: NSLocalizedString("Cannot Load", comment: ""),
-            message: error?.localizedDescription,
-            preferredStyle: .Alert)
-        ac.addAction(UIAlertAction(title: "OK", style: .Default, handler: { _ in
-            ac.dismissViewControllerAnimated(true, completion: nil)
+            message: error.localizedDescription,
+            preferredStyle: .alert)
+        ac.addAction(UIAlertAction(title: "OK", style: .default, handler: { _ in
+            ac.dismiss(animated: true, completion: nil)
         }))
-        self.presentViewController(ac, animated: true, completion: nil)
+        present(ac, animated: true, completion: nil)
     }
 }
 

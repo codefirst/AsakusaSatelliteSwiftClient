@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Scheme
-   LastUpgradeVersion = "0700"
+   LastUpgradeVersion = "0810"
    version = "1.3">
    <BuildAction
       parallelizeBuildables = "YES"
@@ -14,7 +14,7 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "AF5D3F23459B6B4594CCCC9423CDBA31"
+               BlueprintIdentifier = "39A423B8282DEBCD9FA2EEA7A5F88A78"
                BuildableName = "AsakusaSatellite.framework"
                BlueprintName = "AsakusaSatellite"
                ReferencedContainer = "container:Pods/Pods.xcodeproj">

@@ -11,9 +11,9 @@ import Alamofire
 import SwiftyJSON
 
 
-public class Client {
-    public let rootURL: String
-    var apiBaseURL: String { return rootURL.stringByAppendingFormat("api/v1") }
+open class Client {
+    open let rootURL: String
+    var apiBaseURL: String { return rootURL.appendingFormat("api/v1") }
     let apiKey: String?
     
     public convenience init(apiKey: String?) {
@@ -30,44 +30,44 @@ public class Client {
     }
     
     private func removeCookies() {
-        AsakusaSatellite.removeCookiesForURL(NSURL(string: rootURL)!)
+        AsakusaSatellite.removeCookiesForURL(URL(string: rootURL)!)
     }
     
     // MARK: - public APIs
-    
-    public func serviceInfo(completion: Response<ServiceInfo> -> Void) {
-        request(Endpoint.ServiceInfo, completion: completion)
+
+    open func serviceInfo(_ completion: @escaping (Response<ServiceInfo>) -> Void) {
+        request(Endpoint.serviceInfo, completion: completion)
     }
     
-    public func user(completion: Response<User> -> Void) {
-        request(Endpoint.User, completion: completion)
+    open func user(_ completion: @escaping (Response<User>) -> Void) {
+        request(Endpoint.user, completion: completion)
     }
     
-    public func roomList(completion: Response<Many<Room>> -> Void) {
-        request(Endpoint.RoomList, completion: completion)
+    open func roomList(_ completion: @escaping (Response<Many<Room>>) -> Void) {
+        request(Endpoint.roomList, completion: completion)
     }
     
-    public func postMessage(message: String, roomID: String, files: [String], completion: Response<PostMessage> -> Void) {
-        request(Endpoint.PostMessage(message: message, roomID: roomID, files: files), completion: completion)
+    open func postMessage(_ message: String, roomID: String, files: [String], completion: @escaping (Response<PostMessage>) -> Void) {
+        request(Endpoint.postMessage(message: message, roomID: roomID, files: files), completion: completion)
     }
-    public func messageList(roomID: String, count: Int?, sinceID: String?, untilID: String?, order: SortOrder?, completion: Response<Many<Message>> -> Void) {
-        request(Endpoint.MessageList(roomID: roomID, count: count, sinceID: sinceID, untilID: untilID, order: order), completion: completion)
-    }
-    
-    public func addDevice(deviceToken: NSData, name: String, completion: Response<Nothing> -> Void) {
-        request(Endpoint.AddDevice(deviceToken: deviceToken, name: name), requestModifier: {$0.validate(statusCode: [200])}, completion: completion)
+    open func messageList(_ roomID: String, count: Int?, sinceID: String?, untilID: String?, order: SortOrder?, completion: @escaping (Response<Many<Message>>) -> Void) {
+        request(Endpoint.messageList(roomID: roomID, count: count, sinceID: sinceID, untilID: untilID, order: order), completion: completion)
     }
     
-    public func messagePusher(roomID: String, completion: (MessagePusherClient? -> Void)) {
+    open func addDevice(_ deviceToken: Data, name: String, completion: @escaping (Response<Nothing>) -> Void) {
+        request(Endpoint.addDevice(deviceToken: deviceToken, name: name), requestModifier: {$0.validate(statusCode: [200])}, completion: completion)
+    }
+    
+    open func messagePusher(_ roomID: String, completion: @escaping ((MessagePusherClient?) -> Void)) {
         serviceInfo { response in
             switch response {
-            case .Success(let serviceInfo):
+            case .success(let serviceInfo):
                 if let engine = MessagePusherClient.Engine(messagePusher: serviceInfo.messagePusher) {
                     completion(MessagePusherClient(engine: engine, roomID: roomID))
                 } else {
                     completion(nil)
                 }
-            case .Failure(_):
+            case .failure(_):
                 completion(nil)
             }
         }
@@ -75,32 +75,32 @@ public class Client {
     
     // MARK: -
     
-    private func request<T: APIModel>(endpoint: Endpoint, requestModifier: (Request -> Request) = {$0}, completion: Response<T> -> Void) {
-        requestModifier(Alamofire.request(endpoint.URLRequest(apiBaseURL, apiKey: apiKey))).responseJSON { (request, response, result) -> Void in
-            switch result {
-            case .Success(let value):
-                self.completeWithResponse(response, endpoint.modifyJSON(JSON(value)), nil, completion: completion)
-            case .Failure(_, let error):
+    private func request<T: APIModel>(_ endpoint: Endpoint, requestModifier: ((DataRequest) -> DataRequest) = {$0}, completion: @escaping (Response<T>) -> Void) {
+        requestModifier(Alamofire.request(endpoint.URLRequest(apiBaseURL, apiKey: apiKey))).responseJSON { response in
+            switch response.result {
+            case .success(let value):
+                self.completeWithResponse(response.response, endpoint.modifyJSON(JSON(value)), nil, completion: completion)
+            case .failure(let error):
                 NSLog("%@", "failure in Client.request(\(endpoint)): \(error)")
-                completion(.Failure(error as NSError))
+                completion(.failure(error as NSError))
             }
         }
     }
     
-    private func completeWithResponse<T: APIModel>(response: NSHTTPURLResponse?, _ json: JSON, _ error: NSError?, completion: Response<T> -> Void) {
+    private func completeWithResponse<T: APIModel>(_ response: HTTPURLResponse?, _ json: JSON, _ error: NSError?, completion: (Response<T>) -> Void) {
         if let responseItem = T(json: json) {
-            completion(Response.Success(responseItem))
+            completion(Response.success(responseItem))
         } else {
             NSLog("%@", "failure in completeWithResponse")
-            completion(.Failure(error))
+            completion(.failure(error))
         }
     }
 }
 
 
 public enum Response<T> {
-    case Success(T)
-    case Failure(NSError?)
+    case success(T)
+    case failure(NSError?)
 }
 
 
@@ -110,9 +110,9 @@ public enum SortOrder: String {
 }
 
 
-internal func removeCookiesForURL(URL: NSURL) {
-    let cs = NSHTTPCookieStorage.sharedHTTPCookieStorage()
-    for cookie in cs.cookiesForURL(URL) ?? [] {
+internal func removeCookiesForURL(_ URL: Foundation.URL) {
+    let cs = HTTPCookieStorage.shared
+    for cookie in cs.cookies(for: URL) ?? [] {
         cs.deleteCookie(cookie)
     }
 }

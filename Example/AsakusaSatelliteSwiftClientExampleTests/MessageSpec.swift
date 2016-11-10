@@ -13,14 +13,14 @@ import Quick
 import Nimble
 
 
-private func testDataPath(subpath: String) -> String {
+private func testDataPath(_ subpath: String) -> String {
     let s = subpath as NSString
-    return NSBundle(forClass: MessageSpec.self).pathForResource((s.lastPathComponent as NSString).stringByDeletingPathExtension,
+    return Bundle(for: MessageSpec.self).path(forResource: (s.lastPathComponent as NSString).deletingPathExtension,
         ofType: s.pathExtension,
-        inDirectory: s.stringByDeletingLastPathComponent)!
+        inDirectory: s.deletingLastPathComponent)!
 }
 
-private func testJSON(subpath: String) -> JSON {
+private func testJSON(_ subpath: String) -> JSON {
     return JSON(data: NSData(contentsOfFile: testDataPath(subpath))!, options: [], error: nil)
 }
 
@@ -66,8 +66,8 @@ class MessageSpec: QuickSpec {
             
             it ("deserialize multiple messages") {
                 guard let messages = Many<Message>(file: testDataPath("messages.json")),
-                    m1 = messages.items.first,
-                    m2 = messages.items.last else { return fail() }
+                    let m1 = messages.items.first,
+                    let m2 = messages.items.last else { return fail() }
                 
                 expect(m1.body).to(equal("example message1"))
                 expect(m2.body).to(equal("example message2"))
@@ -83,7 +83,7 @@ class MessageSpec: QuickSpec {
                     "profile_image_url": "http://example.com/example.png",
                     "created_at": "2015-12-31 23:59:59+0900",
                     ])),
-                    m2 = Message(json: JSON([
+                    let m2 = Message(json: JSON([
                         "id": "id",
                         "name": "name",
                         "screen_name": "screen_name",

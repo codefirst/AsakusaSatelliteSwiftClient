@@ -20,33 +20,33 @@ class ViewController: UIViewController, UITextFieldDelegate, UITextViewDelegate 
     let usernameLabel = UILabel()
     let roomIDToPostField = UITextField()
     let messageToPostField = UITextField()
-    let postButton = UIButton(type: .System)
-    let listButton = UIButton(type: .System)
+    let postButton = UIButton(type: .system)
+    let listButton = UIButton(type: .system)
     let messagesTextView = UITextView()
     var pusher: MessagePusherClient?
     
     override func loadView() {
         super.loadView()
         
-        edgesForExtendedLayout = .None
+        edgesForExtendedLayout = []
         
-        view.backgroundColor = UIColor.whiteColor()
+        view.backgroundColor = .white
         
         apiKeyField.placeholder = "Your secret api key"
-        apiKeyField.borderStyle = .RoundedRect
+        apiKeyField.borderStyle = .roundedRect
         apiKeyField.delegate = self
         
         roomIDToPostField.placeholder = "room ID to post or list"
-        roomIDToPostField.borderStyle = .RoundedRect
+        roomIDToPostField.borderStyle = .roundedRect
         messageToPostField.placeholder = "message to post"
-        messageToPostField.borderStyle = .RoundedRect
-        postButton.setTitle("Send", forState: .Normal)
-        postButton.addTarget(self, action: "post:", forControlEvents: .TouchUpInside)
-        listButton.setTitle("List", forState: .Normal)
-        listButton.addTarget(self, action: "list:", forControlEvents: .TouchUpInside)
+        messageToPostField.borderStyle = .roundedRect
+        postButton.setTitle("Send", for: .normal)
+        postButton.addTarget(self, action: #selector(post(_:)), for: .touchUpInside)
+        listButton.setTitle("List", for: .normal)
+        listButton.addTarget(self, action: #selector(list(_:)), for: .touchUpInside)
         messagesTextView.delegate = self
         
-        navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Sign in", style: .Plain, target: self, action: "signin:")
+        navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Sign in", style: .plain, target: self, action: #selector(signin(_:)))
         
         let views = [
             "apiKey": apiKeyField,
@@ -62,15 +62,15 @@ class ViewController: UIViewController, UITextFieldDelegate, UITextViewDelegate 
             v.translatesAutoresizingMaskIntoConstraints = false
             view.addSubview(v)
         }
-        view.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("H:|-p-[apiKey]-p-|", options: [], metrics: metrics, views: views))
-        view.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("H:|-p-[name]-p-|", options: [], metrics: metrics, views: views))
-        view.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("H:|-p-[roomID]-p-|", options: [], metrics: metrics, views: views))
-        view.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("H:|-p-[message]-p-|", options: [], metrics: metrics, views: views))
-        view.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("H:|-p-[listButton]", options: [], metrics: metrics, views: views))
-        view.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("H:[post]-p-|", options: [], metrics: metrics, views: views))
-        view.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("H:|[messages]|", options: [], metrics: metrics, views: views))
-        view.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("V:|-p-[apiKey]-p-[name]-20-[roomID]-[message]-[post]-[messages]|", options: [], metrics: metrics, views: views))
-        view.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("V:[message]-[listButton]", options: [], metrics: metrics, views: views))
+        view.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-p-[apiKey]-p-|", options: [], metrics: metrics, views: views))
+        view.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-p-[name]-p-|", options: [], metrics: metrics, views: views))
+        view.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-p-[roomID]-p-|", options: [], metrics: metrics, views: views))
+        view.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-p-[message]-p-|", options: [], metrics: metrics, views: views))
+        view.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-p-[listButton]", options: [], metrics: metrics, views: views))
+        view.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:[post]-p-|", options: [], metrics: metrics, views: views))
+        view.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|[messages]|", options: [], metrics: metrics, views: views))
+        view.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-p-[apiKey]-p-[name]-20-[roomID]-[message]-[post]-[messages]|", options: [], metrics: metrics, views: views))
+        view.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:[message]-[listButton]", options: [], metrics: metrics, views: views))
     }
     
     override func viewDidLoad() {
@@ -81,7 +81,7 @@ class ViewController: UIViewController, UITextFieldDelegate, UITextViewDelegate 
     }
     
     private func reloadClient() {
-        let apiKey = NSUserDefaults.standardUserDefaults().objectForKey(kDefaultsKeyApiKey) as? String
+        let apiKey = UserDefaults.standard.object(forKey: kDefaultsKeyApiKey) as? String
         apiKeyField.text = apiKey
         client = AsakusaSatellite.Client(apiKey: apiKey)
         // client = AsakusaSatellite.Client(rootURL: "http://localhost:3000", apiKey: apiKey)
@@ -90,19 +90,19 @@ class ViewController: UIViewController, UITextFieldDelegate, UITextViewDelegate 
         usernameLabel.text = "(initialized)"
         client.user() { response in
             switch response {
-            case .Success(let user):
+            case .success(let user):
                 self.usernameLabel.text = "logged in as \(user.name)"
-            case .Failure(let error):
+            case .failure(let error):
                 self.usernameLabel.text = "cannot log in: \(error)"
             }
         }
         
         client.roomList { response in
             switch response {
-            case .Success(let many):
+            case .success(let many):
                 let rooms = many.items
                 NSLog("rooms: " + rooms.map{"\($0.name)(\($0.id))"}.description)
-            case .Failure(let error):
+            case .failure(let error):
                 NSLog("failed to list rooms: \(error)")
             }
         }
@@ -121,39 +121,39 @@ class ViewController: UIViewController, UITextFieldDelegate, UITextViewDelegate 
         }
     }
     
-    func post(sender: AnyObject?) {
+    func post(_ sender: AnyObject?) {
         client.postMessage(messageToPostField.text ?? "", roomID: roomIDToPostField.text ?? "", files: []) { response in
             switch response {
-            case .Success(let postMessage):
+            case .success(let postMessage):
                 NSLog("message posted successfully: \(postMessage.messageID)")
                 self.messageToPostField.text = ""
-            case .Failure(let error):
+            case .failure(let error):
                 NSLog("failed to post message: \(error)")
             }
         }
     }
     
-    func list(sender: AnyObject?) {
+    func list(_ sender: AnyObject?) {
         client.messageList(roomIDToPostField.text ?? "", count: 20, sinceID: nil, untilID: nil, order: .Desc) { response in
             switch response {
-            case .Success(let many):
+            case .success(let many):
                 let messages = many.items
                 // NSLog("messages (\(messages.count)): \(messages)")
-                self.messagesTextView.text = messages.map{"\($0.name): \($0.body)"}.joinWithSeparator("\n")
-            case .Failure(let error):
+                self.messagesTextView.text = messages.map{"\($0.name): \($0.body)"}.joined(separator: "\n")
+            case .failure(let error):
                 NSLog("failed to list messages: \(error)")
             }
         }
     }
     
-    func signin(sender: AnyObject?) {
-        let vc = TwitterAuthViewController(rootURL: NSURL(string: client.rootURL)!) { [weak self] apiKey in
-            let defaults = NSUserDefaults.standardUserDefaults()
+    func signin(_ sender: AnyObject?) {
+        let vc = TwitterAuthViewController(rootURL: URL(string: client.rootURL)!) { [weak self] apiKey in
+            let defaults = UserDefaults.standard
             if let apiKey = apiKey {
-                defaults.setObject(apiKey, forKey: kDefaultsKeyApiKey)
+                defaults.set(apiKey, forKey: kDefaultsKeyApiKey)
             } else {
                 NSLog("cannot sign in")
-                defaults.removeObjectForKey(kDefaultsKeyApiKey)
+                defaults.removeObject(forKey: kDefaultsKeyApiKey)
             }
             defaults.synchronize()
             self?.reloadClient()
@@ -163,13 +163,13 @@ class ViewController: UIViewController, UITextFieldDelegate, UITextViewDelegate 
     
     // MARK: - TextField
     
-    func textFieldShouldReturn(textField: UITextField) -> Bool {
-        let defaults = NSUserDefaults.standardUserDefaults()
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        let defaults = UserDefaults.standard
         let apiKey = apiKeyField.text
         if !(apiKey?.isEmpty ?? true) {
-            defaults.setObject(apiKey, forKey: kDefaultsKeyApiKey)
+            defaults.set(apiKey, forKey: kDefaultsKeyApiKey)
         } else {
-            defaults.removeObjectForKey(kDefaultsKeyApiKey)
+            defaults.removeObject(forKey: kDefaultsKeyApiKey)
         }
         defaults.synchronize()
         
@@ -180,7 +180,7 @@ class ViewController: UIViewController, UITextFieldDelegate, UITextViewDelegate 
     
     // MARK: - TextView
 
-    func textViewShouldBeginEditing(textView: UITextView) -> Bool {
+    func textViewShouldBeginEditing(_ textView: UITextView) -> Bool {
         view.endEditing(true)
         return false
     }
