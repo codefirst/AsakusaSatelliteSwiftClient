@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name         = "AsakusaSatellite"
-  s.version      = "0.5.0"
+  s.version      = "0.6.0"
   s.summary      = "AsakusaSatellite API Client for Swift"
   s.description  = <<-DESC
                    AsakusaSatellite is a realtime chat application for developers.

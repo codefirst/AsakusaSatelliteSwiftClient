@@ -20,5 +20,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         window?.makeKeyAndVisible()
         return true
     }
+
+    func application(_ app: UIApplication, open url: URL, options: [UIApplicationOpenURLOptionsKey : Any] = [:]) -> Bool {
+        guard let handler = (window?.rootViewController as? UINavigationController)?.topViewController as? URLHandler else { return false }
+        return handler.open(url: url, options: options)
+    }
 }
 
+
+protocol URLHandler {
+    func open(url: URL, options: [UIApplicationOpenURLOptionsKey : Any]) -> Bool
+}

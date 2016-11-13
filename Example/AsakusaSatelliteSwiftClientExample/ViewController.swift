@@ -14,7 +14,7 @@ import SwiftyJSON
 private let kDefaultsKeyApiKey = "apiKey"
 
 
-class ViewController: UIViewController, UITextFieldDelegate, UITextViewDelegate {
+class ViewController: UIViewController, UITextFieldDelegate, UITextViewDelegate, URLHandler {
     var client = AsakusaSatellite.Client(apiKey: nil)
     let apiKeyField = UITextField()
     let usernameLabel = UILabel()
@@ -46,7 +46,7 @@ class ViewController: UIViewController, UITextFieldDelegate, UITextViewDelegate 
         listButton.addTarget(self, action: #selector(list(_:)), for: .touchUpInside)
         messagesTextView.delegate = self
         
-        navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Sign in", style: .plain, target: self, action: #selector(signin(_:)))
+        navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Sign in", style: .plain, target: self, action: #selector(signin))
         
         let views = [
             "apiKey": apiKeyField,
@@ -145,9 +145,15 @@ class ViewController: UIViewController, UITextFieldDelegate, UITextViewDelegate 
             }
         }
     }
-    
-    func signin(_ sender: AnyObject?) {
-        let vc = TwitterAuthViewController(rootURL: URL(string: client.rootURL)!) { [weak self] apiKey in
+
+    // MARK: - Sign in
+
+    private var auth: Auth?
+
+    @objc private func signin() {
+        guard let rootURL = URL(string: client.rootURL) else { return }
+        let auth = Auth()
+        auth.completion = { apiKey in
             let defaults = UserDefaults.standard
             if let apiKey = apiKey {
                 defaults.set(apiKey, forKey: kDefaultsKeyApiKey)
@@ -156,9 +162,15 @@ class ViewController: UIViewController, UITextFieldDelegate, UITextViewDelegate 
                 defaults.removeObject(forKey: kDefaultsKeyApiKey)
             }
             defaults.synchronize()
-            self?.reloadClient()
+            self.reloadClient()
+            self.auth = nil
         }
-        navigationController?.pushViewController(vc, animated: true)
+        auth.presentSignInViewController(on: self, rootURL: rootURL, callbackScheme: "org.codefirst.AsakusaSatelliteSwiftClientExample")
+        self.auth = auth
+    }
+
+    func open(url: URL, options: [UIApplicationOpenURLOptionsKey : Any]) -> Bool {
+        return auth?.open(url: url, options: options) ?? false
     }
     
     // MARK: - TextField
