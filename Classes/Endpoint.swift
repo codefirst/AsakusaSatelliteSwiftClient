@@ -51,7 +51,7 @@ public enum Endpoint {
                 params["order"] = order?.rawValue
                 return (.get, "/message/list.json", params, nil, true)
             case let .addDevice(deviceToken, name):
-                return (.post, "/user/add_device", ["device": deviceToken.description, "name": name], nil, true)
+                return (.post, "/user/add_device", ["device": deviceToken.map {String(format: "%02x", $0)}.joined(separator: ""), "name": name], nil, true)
             }
             }()
         
