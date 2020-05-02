@@ -10,6 +10,7 @@ Pod::Spec.new do |s|
   s.author       = { "banjun" => "banjun@gmail.com" }
   s.ios.deployment_target = "9.0"
   s.osx.deployment_target = "10.11"
+  s.swift_versions = ['5.0']
   s.source       = { :git => "https://github.com/codefirst/AsakusaSatelliteSwiftClient.git", :tag => s.version.to_s }
   s.source_files = 'Classes/*.swift'
   s.ios.source_files = 'Classes/ios/*.swift'
