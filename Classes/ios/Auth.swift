@@ -14,7 +14,7 @@ public class Auth: NSObject, SFSafariViewControllerDelegate {
         self.signinVC = vc
     }
 
-    public func open(url: URL, options: [UIApplicationOpenURLOptionsKey : Any]) -> Bool {
+    public func open(url: URL, options: [UIApplication.OpenURLOptionsKey : Any]) -> Bool {
         let components = NSURLComponents(url: url, resolvingAgainstBaseURL: false)
         if let apiKey = components?.queryItems?.filter({$0.name == "api_key"}).first?.value {
             // signed in

@@ -9,7 +9,6 @@
 import Foundation
 import Alamofire
 import UTIKit
-import SwiftyJSON
 
 
 public enum Endpoint {
@@ -89,7 +88,7 @@ public enum Endpoint {
         return request
     }
     
-    func modifyJSON(_ json: JSON) -> JSON {
+    func modifyJSON(_ json: [[String: Any]]) -> [[String: Any]] {
         var json = json
         switch self {
         case .messageList(_, _, _, _, .some(.Asc)):

@@ -8,12 +8,12 @@
 
 import Foundation
 import SocketIO
-import SwiftyJSON
 
 
 open class MessagePusherClient: CustomStringConvertible {
     let engine: Engine
     let roomID: String
+    let socketManager: SocketManager
     let socket: SocketIOClient
     
     // callbacks
@@ -53,7 +53,8 @@ open class MessagePusherClient: CustomStringConvertible {
             case .keima(_, let key): return ["app": key]
             }
             }()
-        self.socket = SocketIOClient(socketURL: engine.url, config: [SocketIOClientOption.connectParams(connectParams)])
+        self.socketManager = SocketManager(socketURL: engine.url, config: [.connectParams(connectParams)])
+        self.socket = self.socketManager.defaultSocket
         self.socket.on("connect") { data, ack in
             // NSLog("%@", "\(self): on connect")
             ack.with([])
@@ -68,16 +69,12 @@ open class MessagePusherClient: CustomStringConvertible {
                 if args.count < 2 { NSLog("%@", "\(self) unexpected message_create args: \(data)"); return }
                 
                 do {
-                    let contentJsonObject = try JSONSerialization.jsonObject(
-                        with: args[1].data(using: .utf8, allowLossyConversion: true) ?? Data(),
-                        options: .allowFragments)
-                    let contentJson = SwiftyJSON.JSON(contentJsonObject)["content"]
-                    
-                    if let message = Message(json: contentJson) {
-                        self.onMessageCreate?(message)
-                    } else {
-                        NSLog("%@", "error in creating message from json: \(contentJson)")
+                    struct MessageWrapper: APIModel {
+                        var content: Message
                     }
+                    guard let data = args[1].data(using: .utf8, allowLossyConversion: true) else { return }
+                    let message = try MessageWrapper.decoder.decode(MessageWrapper.self, from: data)
+                    self.onMessageCreate?(message.content)
                 } catch {
                     NSLog("%@", "\(self) cannot parse json: \(data)")
                 }

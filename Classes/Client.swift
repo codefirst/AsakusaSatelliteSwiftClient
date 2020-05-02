@@ -8,11 +8,10 @@
 
 import Foundation
 import Alamofire
-import SwiftyJSON
 
 
 open class Client {
-    open let rootURL: String
+    public let rootURL: String
     var apiBaseURL: String { return rootURL.appendingFormat("api/v1") }
     let apiKey: String?
     
@@ -43,14 +42,14 @@ open class Client {
         request(Endpoint.user, completion: completion)
     }
     
-    open func roomList(_ completion: @escaping (Response<Many<Room>>) -> Void) {
+    open func roomList(_ completion: @escaping (Response<[Room]>) -> Void) {
         request(Endpoint.roomList, completion: completion)
     }
     
     open func postMessage(_ message: String, roomID: String, files: [String], completion: @escaping (Response<PostMessage>) -> Void) {
         request(Endpoint.postMessage(message: message, roomID: roomID, files: files), completion: completion)
     }
-    open func messageList(_ roomID: String, count: Int?, sinceID: String?, untilID: String?, order: SortOrder?, completion: @escaping (Response<Many<Message>>) -> Void) {
+    open func messageList(_ roomID: String, count: Int?, sinceID: String?, untilID: String?, order: SortOrder?, completion: @escaping (Response<[Message]>) -> Void) {
         request(Endpoint.messageList(roomID: roomID, count: count, sinceID: sinceID, untilID: untilID, order: order), completion: completion)
     }
     
@@ -62,7 +61,7 @@ open class Client {
         serviceInfo { response in
             switch response {
             case .success(let serviceInfo):
-                if let engine = MessagePusherClient.Engine(messagePusher: serviceInfo.messagePusher) {
+                if let engine = MessagePusherClient.Engine(messagePusher: serviceInfo.message_pusher) {
                     completion(MessagePusherClient(engine: engine, roomID: roomID))
                 } else {
                     completion(nil)
@@ -76,10 +75,12 @@ open class Client {
     // MARK: -
     
     private func request<T: APIModel>(_ endpoint: Endpoint, requestModifier: ((DataRequest) -> DataRequest) = {$0}, completion: @escaping (Response<T>) -> Void) {
-        requestModifier(Alamofire.request(endpoint.URLRequest(apiBaseURL, apiKey: apiKey))).responseJSON { response in
+        requestModifier(Alamofire.request(endpoint.URLRequest(apiBaseURL, apiKey: apiKey))).responseData { response in
             switch response.result {
             case .success(let value):
-                self.completeWithResponse(response.response, endpoint.modifyJSON(JSON(value)), nil, completion: completion)
+                let json = try? JSONSerialization.jsonObject(with: value, options: .allowFragments)
+                let jsonArray = json as? [[String: Any]]
+                self.completeWithResponse(response.response, jsonArray.flatMap {try? JSONSerialization.data(withJSONObject: endpoint.modifyJSON($0), options: [])} ?? value, nil, completion: completion)
             case .failure(let error):
                 NSLog("%@", "failure in Client.request(\(endpoint)): \(error)")
                 completion(.failure(error as NSError))
@@ -87,12 +88,13 @@ open class Client {
         }
     }
     
-    private func completeWithResponse<T: APIModel>(_ response: HTTPURLResponse?, _ json: JSON, _ error: NSError?, completion: (Response<T>) -> Void) {
-        if let responseItem = T(json: json) {
+    private func completeWithResponse<T: APIModel>(_ response: HTTPURLResponse?, _ json: Data, _ error: NSError?, completion: (Response<T>) -> Void) {
+        do {
+            let responseItem = try T.decoder.decode(T.self, from: json)
             completion(Response.success(responseItem))
-        } else {
+        } catch {
             NSLog("%@", "failure in completeWithResponse")
-            completion(.failure(error))
+            completion(.failure(error as NSError))
         }
     }
 }
