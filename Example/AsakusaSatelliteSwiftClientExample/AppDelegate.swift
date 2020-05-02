@@ -14,14 +14,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     var window: UIWindow?
 
 
-    func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
+    func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         window = UIWindow(frame: UIScreen.main.bounds)
         window?.rootViewController = UINavigationController(rootViewController: ViewController())
         window?.makeKeyAndVisible()
         return true
     }
 
-    func application(_ app: UIApplication, open url: URL, options: [UIApplicationOpenURLOptionsKey : Any] = [:]) -> Bool {
+    func application(_ app: UIApplication, open url: URL, options: [UIApplication.OpenURLOptionsKey : Any] = [:]) -> Bool {
         guard let handler = (window?.rootViewController as? UINavigationController)?.topViewController as? URLHandler else { return false }
         return handler.open(url: url, options: options)
     }
@@ -29,5 +29,5 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
 
 protocol URLHandler {
-    func open(url: URL, options: [UIApplicationOpenURLOptionsKey : Any]) -> Bool
+    func open(url: URL, options: [UIApplication.OpenURLOptionsKey : Any]) -> Bool
 }

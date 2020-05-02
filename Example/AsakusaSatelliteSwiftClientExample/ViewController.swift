@@ -8,7 +8,6 @@
 
 import UIKit
 import AsakusaSatellite
-import SwiftyJSON
 
 
 private let kDefaultsKeyApiKey = "apiKey"
@@ -85,7 +84,7 @@ class ViewController: UIViewController, UITextFieldDelegate, UITextViewDelegate,
         apiKeyField.text = apiKey
         client = AsakusaSatellite.Client(apiKey: apiKey)
         // client = AsakusaSatellite.Client(rootURL: "http://localhost:3000", apiKey: apiKey)
-        NSLog("initialized client with apiKey = \(apiKey)")
+        NSLog("initialized client with apiKey = \(String(describing: apiKey))")
         
         usernameLabel.text = "(initialized)"
         client.user() { response in
@@ -93,55 +92,53 @@ class ViewController: UIViewController, UITextFieldDelegate, UITextViewDelegate,
             case .success(let user):
                 self.usernameLabel.text = "logged in as \(user.name)"
             case .failure(let error):
-                self.usernameLabel.text = "cannot log in: \(error)"
+                self.usernameLabel.text = "cannot log in: \(String(describing: error))"
             }
         }
         
         client.roomList { response in
             switch response {
-            case .success(let many):
-                let rooms = many.items
+            case .success(let rooms):
                 NSLog("rooms: " + rooms.map{"\($0.name)(\($0.id))"}.description)
             case .failure(let error):
-                NSLog("failed to list rooms: \(error)")
+                NSLog("failed to list rooms: \(String(describing: error))")
             }
         }
         
         client.messagePusher(roomIDToPostField.text ?? "") { mpc in
-            NSLog("pusher: \(mpc)")
+            NSLog("pusher: \(String(describing: mpc))")
             
             self.pusher = mpc
             if let pusher = self.pusher {
                 pusher.onMessageCreate = { message in
                     // NSLog("onMessageCreate: \(message)")
-                    self.messagesTextView.text = "\(self.messagesTextView.text)\n\(message.name): \(message.body)"
+                    self.messagesTextView.text = "\(self.messagesTextView.text ?? "")\n\(message.name): \(message.body)"
                 }
                 pusher.connect()
             }
         }
     }
     
-    func post(_ sender: AnyObject?) {
+    @objc func post(_ sender: AnyObject?) {
         client.postMessage(messageToPostField.text ?? "", roomID: roomIDToPostField.text ?? "", files: []) { response in
             switch response {
             case .success(let postMessage):
-                NSLog("message posted successfully: \(postMessage.messageID)")
+                NSLog("message posted successfully: \(postMessage.message_id)")
                 self.messageToPostField.text = ""
             case .failure(let error):
-                NSLog("failed to post message: \(error)")
+                NSLog("failed to post message: \(String(describing: error))")
             }
         }
     }
     
-    func list(_ sender: AnyObject?) {
+    @objc func list(_ sender: AnyObject?) {
         client.messageList(roomIDToPostField.text ?? "", count: 20, sinceID: nil, untilID: nil, order: .Desc) { response in
             switch response {
-            case .success(let many):
-                let messages = many.items
+            case .success(let messages):
                 // NSLog("messages (\(messages.count)): \(messages)")
                 self.messagesTextView.text = messages.map{"\($0.name): \($0.body)"}.joined(separator: "\n")
             case .failure(let error):
-                NSLog("failed to list messages: \(error)")
+                NSLog("failed to list messages: \(String(describing: error))")
             }
         }
     }
@@ -169,7 +166,7 @@ class ViewController: UIViewController, UITextFieldDelegate, UITextViewDelegate,
         self.auth = auth
     }
 
-    func open(url: URL, options: [UIApplicationOpenURLOptionsKey : Any]) -> Bool {
+    func open(url: URL, options: [UIApplication.OpenURLOptionsKey : Any]) -> Bool {
         return auth?.open(url: url, options: options) ?? false
     }
     
