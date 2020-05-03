@@ -103,8 +103,8 @@ public struct Message: APIModel, CustomStringConvertible {
     public let html_body: String
     public let created_at: Date
     public let profile_image_url: String
-    public let attachments: [Attachment]?
-    public var imageAttachments: [Attachment] { return attachments?.filter{$0.content_type.hasPrefix("image/")} ?? [] }
+    public let attachment: [Attachment]?
+    public var imageAttachments: [Attachment] { return attachment?.filter{$0.content_type.hasPrefix("image/")} ?? [] }
     
     public var description: String {
         return "Message([\(id) (prev = \(String(describing: prev_id)))] \(created_at) @\(screen_name)(\(name)) ![\(profile_image_url)]: \(body) \(html_body))"
